@@ -14,7 +14,9 @@ namespace BatmansInventory.API.Interfaces
         decimal Value { get; set; }
         DateTime Created { get; set; }
         string CreatedBy { get; set; }
-        DateTime LastUpdated { get; set; }
-        string LastUpdatedBy { get; set; }
+
+#nullable enable
+        DateTime? LastUpdated { get; set; }
+        string? LastUpdatedBy { get; set; }
     }
 }

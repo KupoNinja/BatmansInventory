@@ -16,7 +16,8 @@ namespace BatmansInventory.API.Models
         public int SafetyStock { get; set; }
         public DateTime Created { get; set; }
         public string CreatedBy { get; set; }
-        public DateTime LastUpdated { get; set; }
-        public string LastUpdatedBy { get; set; }
+#nullable enable
+        public DateTime? LastUpdated { get; set; }
+        public string? LastUpdatedBy { get; set; }
     }
 }

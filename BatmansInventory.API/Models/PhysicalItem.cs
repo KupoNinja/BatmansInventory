@@ -17,7 +17,9 @@ namespace BatmansInventory.API.Models
         public decimal Value { get; set; }
         public DateTime Created { get; set; }
         public string CreatedBy { get; set; }
-        public DateTime LastUpdated { get; set; }
-        public string LastUpdatedBy { get; set; }
+
+#nullable enable
+        public DateTime? LastUpdated { get; set; }
+        public string? LastUpdatedBy { get; set; }
     }
 }

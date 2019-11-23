@@ -15,7 +15,10 @@ namespace BatmansInventory.API.Interfaces
         int SafetyStock { get; set; }
         DateTime Created { get; set; }
         string CreatedBy { get; set; }
-        DateTime LastUpdated { get; set; }
-        string LastUpdatedBy { get; set; }
+
+//C#8 Warning if 
+#nullable enable
+        DateTime? LastUpdated { get; set; }
+        string? LastUpdatedBy { get; set; }
     }
 }

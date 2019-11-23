@@ -8,6 +8,7 @@ namespace BatmansInventory.API.Interfaces
     public interface ILocation
     {
         int LocationId { get; set; }
-        string Name { get; set; }
+        string City { get; set; }
+        string State { get; set; }
     }
 }

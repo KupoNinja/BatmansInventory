@@ -9,6 +9,7 @@ namespace BatmansInventory.API.Models
     public class Location : ILocation
     {
         public int LocationId { get; set; }
-        public string Name { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
     }
 }

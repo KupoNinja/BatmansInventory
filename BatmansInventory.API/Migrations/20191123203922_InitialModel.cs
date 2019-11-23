@@ -50,7 +50,7 @@ namespace BatmansInventory.API.Migrations
                     ItemId = table.Column<int>(nullable: false),
                     SerialNumber = table.Column<string>(nullable: true),
                     LocationId = table.Column<int>(nullable: false),
-                    Value = table.Column<decimal>(nullable: false),
+                    Value = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Created = table.Column<DateTime>(nullable: false),
                     CreatedBy = table.Column<string>(nullable: true),
                     LastUpdated = table.Column<DateTime>(nullable: true),

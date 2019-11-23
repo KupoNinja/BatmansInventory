@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BatmansInventory.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20191123195344_InitialModel")]
+    [Migration("20191123203922_InitialModel")]
     partial class InitialModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

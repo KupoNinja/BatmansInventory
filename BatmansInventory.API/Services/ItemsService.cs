@@ -20,7 +20,7 @@ namespace BatmansInventory.API.Services
 
         public Item GetByPartNumber(string partNumber)
         {
-            var item = _db.Items.FirstOrDefault(i => i.PartNumber == partNumber);
+            Item item = _db.Items.FirstOrDefault(i => i.PartNumber == partNumber);
             if (item == null) { throw new Exception("That item doesn't exist. Might be a new item Lucius can invent!"); }
 
             return item;
@@ -31,5 +31,24 @@ namespace BatmansInventory.API.Services
             _db = db;
         }
 
+        public Item CreateItem(Item itemData)
+        {
+            //Set Item VM or DTO for Create
+            Item newItem = new Item();
+            newItem.PartName = itemData.PartName;
+            //Validate for PartNumber convention... What's the convention?
+            newItem.PartNumber = itemData.PartNumber;
+            newItem.OrderLeadTime = itemData.OrderLeadTime;
+            //Default QuantityOnHand to 0?
+            newItem.QuantityOnHand = itemData.QuantityOnHand;
+            newItem.SafetyStock = itemData.SafetyStock;
+            newItem.Created = DateTime.Now;
+            //Get UserId to auto Createdby
+            newItem.CreatedBy = itemData.CreatedBy;
+            _db.Items.Add(newItem);
+            _db.SaveChanges();
+
+            return newItem;
+        }
     }
 }

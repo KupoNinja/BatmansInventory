@@ -40,10 +40,20 @@ namespace DatingApp.API.Controllers
             }
         }
 
-        // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<Item> CreateItem([FromBody] Item itemData)
         {
+            try
+            {
+                Item newItem = _its.CreateItem(itemData);
+
+                return Created("api/items/" + newItem.PartNumber, newItem);
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
         }
 
         // PUT api/values/5

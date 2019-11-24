@@ -27,13 +27,12 @@ namespace DatingApp.API.Controllers
             }
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<Item> GetById(int id)
+        [HttpGet("{partNumber}")]
+        public ActionResult<Item> GetByPartNumber(string partNumber)
         {
             try
             {
-                return Ok(_its.GetById(id));
+                return Ok(_its.GetByPartNumber(partNumber));
             }
             catch (Exception e)
             {

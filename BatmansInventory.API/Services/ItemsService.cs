@@ -12,12 +12,16 @@ namespace BatmansInventory.API.Services
 
         public List<Item> GetAll()
         {
-            return _db.Items.ToList();
+            var items = _db.Items.ToList();
+            if (items == null) { throw new Exception("Item Inventory is empty. Looks like a funny villain wiped out his database. HaHAhA..."); }
+
+            return items;
         }
 
-        public Item GetById(int id)
+        public Item GetByPartNumber(string partNumber)
         {
-            var item = _db.Items.FirstOrDefault(i => i.ItemId == id);
+            var item = _db.Items.FirstOrDefault(i => i.PartNumber == partNumber);
+            if (item == null) { throw new Exception("That item doesn't exist. Might be a new item Lucius can invent!"); }
 
             return item;
         }

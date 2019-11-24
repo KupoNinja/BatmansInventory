@@ -43,6 +43,14 @@ namespace BatmansInventory.API.Services
             return pitem;
         }
 
+        //Should be in method?
+        public decimal GetTotalValue(int itemId)
+        {
+            var pItemsCount = _db.PhysicalItems.Where(p => p.ItemId == itemId).ToList();
+
+            return pItemsCount.Sum(p => p.Value);
+        }
+
         public PhysicalItem CreatePhysicalItem(PhysicalItem pItemData)
         {
             //Set PhysicalItem VM or DTO for Create

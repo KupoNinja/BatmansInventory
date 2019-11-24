@@ -13,30 +13,36 @@ namespace BatmansInventory.API.Services
         public List<Item> GetAll()
         {
             var items = _db.Items.ToList();
-            if (items == null) { throw new Exception("Item Inventory is empty. Looks like a funny villain wiped out his database. HaHAhA..."); }
+            if (items == null) { throw new Exception("Item Inventory is empty. Looks like a jokester wiped out his database. HaHAhA..."); }
 
             return items;
         }
 
+        public List<Item> GetAllUnderSafetyStock()
+        {
+            var itemsUnderSafetyStock = (from i in _db.Items
+                                         where i.QuantityOnHand < i.SafetyStock
+                                         select i).ToList();
+
+            return itemsUnderSafetyStock;
+        }
+
         public Item GetByPartNumber(string partNumber)
         {
-            Item item = _db.Items.FirstOrDefault(i => i.PartNumber == partNumber);
+            var item = _db.Items.FirstOrDefault(i => i.PartNumber == partNumber);
             if (item == null) { throw new Exception("That item doesn't exist. Might be a new item Lucius can invent!"); }
 
             return item;
         }
 
-        public ItemsService(DataContext db)
-        {
-            _db = db;
-        }
 
         public Item CreateItem(Item itemData)
         {
             //Set Item VM or DTO for Create
-            Item newItem = new Item();
+            var newItem = new Item();
             newItem.PartName = itemData.PartName;
             //Validate for PartNumber convention... What's the convention?
+            //Does not throw exception if PartNumber is not unique
             newItem.PartNumber = itemData.PartNumber;
             newItem.OrderLeadTime = itemData.OrderLeadTime;
             //Default QuantityOnHand to 0?
@@ -50,5 +56,11 @@ namespace BatmansInventory.API.Services
 
             return newItem;
         }
+        public ItemsService(DataContext db)
+        {
+            _db = db;
+        }
+
+
     }
 }

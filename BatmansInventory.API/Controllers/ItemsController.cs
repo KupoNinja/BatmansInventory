@@ -40,6 +40,19 @@ namespace DatingApp.API.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult<IEnumerable<Item>> GetAllUnderSafetyStock()
+        {
+            try
+            {
+                return Ok(_its.GetAllUnderSafetyStock());
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpPost]
         public ActionResult<Item> CreateItem([FromBody] Item itemData)
         {

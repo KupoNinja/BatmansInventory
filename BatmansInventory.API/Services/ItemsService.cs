@@ -69,7 +69,7 @@ namespace BatmansInventory.API.Services
         public Item UpdateItem(Item itemData)
         {
             //Change this to get by id
-            var itemToUpdate = GetByPartNumber(itemData.PartNumber);
+            var itemToUpdate = GetById(itemData.ItemId);
             itemToUpdate.PartName = itemData.PartName;
             //How to handle if needing to change PartNumber?
             itemToUpdate.OrderLeadTime = itemData.OrderLeadTime;

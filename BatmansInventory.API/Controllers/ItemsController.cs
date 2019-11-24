@@ -71,7 +71,6 @@ namespace DatingApp.API.Controllers
             }
         }
 
-        // PUT api/values/5
         [HttpPut("{partNumber}")]
         public ActionResult<Item> UpdateItem(string partNumber, [FromBody] Item itemData)
         {
@@ -87,7 +86,6 @@ namespace DatingApp.API.Controllers
             }
         }
 
-        // DELETE api/values/5
         [HttpDelete("{id}")]
         public ActionResult<bool> Delete(int id)
         {

@@ -51,16 +51,31 @@ namespace BatmansInventory.API.Services
             newItem.Created = DateTime.Now;
             //Get UserId to auto Createdby
             newItem.CreatedBy = itemData.CreatedBy;
+
             _db.Items.Add(newItem);
             _db.SaveChanges();
 
             return newItem;
         }
+
+        public Item UpdateItem(Item itemData)
+        {
+            var itemToUpdate = GetByPartNumber(itemData.PartNumber);
+            itemToUpdate.PartName = itemData.PartName;
+            //How to handle if needing to change PartNumber?
+            itemToUpdate.OrderLeadTime = itemData.OrderLeadTime;
+            itemToUpdate.QuantityOnHand = itemData.QuantityOnHand;
+            itemToUpdate.SafetyStock = itemData.SafetyStock;
+            itemToUpdate.LastUpdated = DateTime.Now;
+            itemToUpdate.LastUpdatedBy = itemData.LastUpdatedBy;
+            
+            _db.SaveChanges();
+
+            return itemToUpdate;
+        }
         public ItemsService(DataContext db)
         {
             _db = db;
         }
-
-
     }
 }

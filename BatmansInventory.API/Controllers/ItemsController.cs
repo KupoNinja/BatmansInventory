@@ -40,6 +40,7 @@ namespace DatingApp.API.Controllers
             }
         }
 
+        //Unable to test...
         [HttpGet]
         public ActionResult<IEnumerable<Item>> GetAllUnderSafetyStock()
         {
@@ -60,6 +61,7 @@ namespace DatingApp.API.Controllers
             {
                 Item newItem = _its.CreateItem(itemData);
 
+                //Unable to test Url
                 return Created("api/items/" + newItem.PartNumber, newItem);
             }
             catch (Exception e)
@@ -70,9 +72,19 @@ namespace DatingApp.API.Controllers
         }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{partNumber}")]
+        public ActionResult<Item> UpdateItem(string partNumber, [FromBody] Item itemData)
         {
+            try
+            {
+                itemData.PartNumber = partNumber;
+
+                return Ok(_its.UpdateItem(itemData));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         // DELETE api/values/5

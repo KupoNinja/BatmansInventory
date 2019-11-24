@@ -13,7 +13,7 @@ namespace BatmansInventory.API.Services
         public List<Item> GetAll()
         {
             var items = _db.Items.ToList();
-            if (items == null) { throw new Exception("Item Inventory is empty. Looks like a jokester wiped out his database. HaHAhA..."); }
+            if (items == null || items.Count == 0) { throw new Exception("Item Inventory is empty. Looks like a jokester wiped out his database. HaHAhA..."); }
 
             return items;
         }
@@ -68,6 +68,7 @@ namespace BatmansInventory.API.Services
 
         public Item UpdateItem(Item itemData)
         {
+            //Change this to get by id
             var itemToUpdate = GetByPartNumber(itemData.PartNumber);
             itemToUpdate.PartName = itemData.PartName;
             //How to handle if needing to change PartNumber?

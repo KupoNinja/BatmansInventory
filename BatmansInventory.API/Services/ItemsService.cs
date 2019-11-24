@@ -15,6 +15,13 @@ namespace BatmansInventory.API.Services
             return _db.Items.ToList();
         }
 
+        public Item GetById(int id)
+        {
+            var item = _db.Items.FirstOrDefault(i => i.ItemId == id);
+
+            return item;
+        }
+
         public ItemsService(DataContext db)
         {
             _db = db;

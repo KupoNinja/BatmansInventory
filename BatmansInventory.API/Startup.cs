@@ -32,6 +32,7 @@ namespace BatmansInventory.API
             services.AddDbContext<DataContext>(
                 options => options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddTransient<ItemsService>();
         }
 

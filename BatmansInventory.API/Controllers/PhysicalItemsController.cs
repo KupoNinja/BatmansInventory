@@ -41,6 +41,19 @@ namespace DatingApp.API.Controllers
             }
         }
 
+        [HttpGet("{itemId}/value")]
+        public ActionResult<decimal> GetTotalValueByItem(int itemId)
+        {
+            try
+            {
+                return Ok(_pis.GetTotalValueByItem(itemId));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpGet("{serialNumber}")]
         public ActionResult<Item> GetBySerialNumber(string serialNumber)
         {

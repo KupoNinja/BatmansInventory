@@ -43,8 +43,8 @@ namespace BatmansInventory.API.Services
             return pitem;
         }
 
-        //Should be in method?
-        public decimal GetTotalValue(int itemId)
+        //Should be in class?
+        public decimal GetTotalValueByItem(int itemId)
         {
             var pItemsCount = _db.PhysicalItems.Where(p => p.ItemId == itemId).ToList();
 

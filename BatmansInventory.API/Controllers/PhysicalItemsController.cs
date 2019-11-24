@@ -27,6 +27,20 @@ namespace DatingApp.API.Controllers
             }
         }
 
+        [HttpGet("{locationId}/location")]
+        public ActionResult<IEnumerable<PhysicalItem>> GetByLocation(int locationId)
+        {
+            try
+            {
+                return Ok(_pis.GetByLocation(locationId));
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+        }
+
         [HttpGet("{serialNumber}")]
         public ActionResult<Item> GetBySerialNumber(string serialNumber)
         {

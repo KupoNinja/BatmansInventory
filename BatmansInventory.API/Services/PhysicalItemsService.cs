@@ -1,4 +1,5 @@
 ﻿using BatmansInventory.API.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,15 +27,13 @@ namespace BatmansInventory.API.Services
             return pitem;
         }
 
-        //GetByLocation
-        //public List<Item> GetAllUnderSafetyStock()
-        //{
-        //    var PhysicalItemsUnderSafetyStock = (from i in _db.Items
-        //                                 where i.QuantityOnHand < i.SafetyStock
-        //                                 select i).ToList();
+        public List<PhysicalItem> GetByLocation(int locationId)
+        {
+            var pItems = _db.PhysicalItems.Where(p => p.LocationId == locationId).ToList();
+            if (pItems == null || pItems.Count == 0) { throw new Exception("No items at this location. Let's hope kids didn't find your stash."); }
 
-        //    return itemsUnderSafetyStock;
-        //}
+            return pItems;
+        }
 
         public PhysicalItem GetBySerialNumber(string serialNumber)
         {

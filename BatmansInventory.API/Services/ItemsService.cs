@@ -76,7 +76,9 @@ namespace BatmansInventory.API.Services
             itemToUpdate.SafetyStock = itemData.SafetyStock;
             itemToUpdate.LastUpdated = DateTime.Now;
             itemToUpdate.LastUpdatedBy = itemData.LastUpdatedBy;
-            
+
+            //Added for disconnected state
+            _db.Items.Update(itemToUpdate);
             _db.SaveChanges();
 
             return itemToUpdate;

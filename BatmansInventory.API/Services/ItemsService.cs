@@ -28,9 +28,7 @@ namespace BatmansInventory.API.Services
 
         public List<Item> GetAllUnderSafetyStock()
         {
-            var itemsUnderSafetyStock = (from i in _db.Items
-                                         where i.QuantityOnHand < i.SafetyStock
-                                         select i).ToList();
+            var itemsUnderSafetyStock = _db.Items.Where(i => i.QuantityOnHand < i.SafetyStock).ToList();
 
             return itemsUnderSafetyStock;
         }

@@ -19,9 +19,14 @@ namespace BatmansInventory.API.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<PhysicalItem>()
                 .Property(p => p.Value)
                 .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<Item>()
+                .HasIndex(i => i.PartNumber)
+                .IsUnique();
         }
     }
 }

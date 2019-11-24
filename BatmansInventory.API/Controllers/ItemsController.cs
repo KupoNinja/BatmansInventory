@@ -89,8 +89,16 @@ namespace DatingApp.API.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult<bool> Delete(int id)
         {
+            try
+            {
+                return Ok(_its.DeleteItem(id));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         public ItemsController(ItemsService its)

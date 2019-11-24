@@ -18,6 +18,14 @@ namespace BatmansInventory.API.Services
             return items;
         }
 
+        private Item GetById(int id)
+        {
+            var item = _db.Items.FirstOrDefault(i => i.ItemId == id);
+            if (item == null) { throw new Exception("That item doesn't exist. Might be a new item Lucius can invent!"); }
+
+            return item;
+        }
+
         public List<Item> GetAllUnderSafetyStock()
         {
             var itemsUnderSafetyStock = (from i in _db.Items
@@ -73,6 +81,18 @@ namespace BatmansInventory.API.Services
 
             return itemToUpdate;
         }
+
+        public bool DeleteItem(int id)
+        {
+            var itemToDelete = GetById(id);
+
+            _db.Items.Remove(itemToDelete);
+            _db.SaveChanges();
+
+            //Don't like this... Tired...
+            return true;
+        }
+
         public ItemsService(DataContext db)
         {
             _db = db;

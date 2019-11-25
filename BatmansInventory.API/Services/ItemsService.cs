@@ -1,4 +1,5 @@
-﻿using BatmansInventory.API.Models;
+﻿using BatmansInventory.API.Interfaces;
+using BatmansInventory.API.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BatmansInventory.API.Services
 {
-    public class ItemsService 
+    public class ItemsService : IItemsService
     {
         private readonly DataContext _db;
 
@@ -18,7 +19,7 @@ namespace BatmansInventory.API.Services
             return items;
         }
 
-        private Item GetById(int id)
+        public Item GetById(int id)
         {
             var item = _db.Items.FirstOrDefault(i => i.ItemId == id);
             if (item == null) { throw new Exception("That item doesn't exist. Might be a new item Lucius can invent!"); }

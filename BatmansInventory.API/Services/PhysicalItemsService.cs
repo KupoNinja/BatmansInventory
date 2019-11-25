@@ -1,4 +1,5 @@
-﻿using BatmansInventory.API.Models;
+﻿using BatmansInventory.API.Interfaces;
+using BatmansInventory.API.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BatmansInventory.API.Services
 {
-    public class PhysicalItemsService
+    public class PhysicalItemsService : IPhysicalItemService
     {
         private readonly DataContext _db;
 
@@ -19,7 +20,7 @@ namespace BatmansInventory.API.Services
             return pItems;
         }
 
-        private PhysicalItem GetById(int id)
+        public PhysicalItem GetById(int id)
         {
             var pitem = _db.PhysicalItems.FirstOrDefault(i => i.PhysicalItemId == id);
             if (pitem == null) { throw new Exception("That item doesn't exist. Looks like Alfred needs to order more!"); }

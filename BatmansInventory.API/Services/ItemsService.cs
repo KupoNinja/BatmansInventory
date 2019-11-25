@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BatmansInventory.API.Services
 {
-    public class ItemsService
+    public class ItemsService 
     {
         private readonly DataContext _db;
 

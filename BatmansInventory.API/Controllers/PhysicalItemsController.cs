@@ -36,8 +36,7 @@ namespace DatingApp.API.Controllers
             }
             catch (Exception e)
             {
-
-                throw;
+                return BadRequest(e.Message);
             }
         }
 

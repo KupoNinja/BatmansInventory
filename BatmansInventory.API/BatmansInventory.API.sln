@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BatmansInventory.API", "BatmansInventory.API.csproj", "{6A7D86D2-0E33-42E3-B102-84DB93C7D4F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatmansInventory.Tests", "..\BatmansInventory.Tests\BatmansInventory.Tests.csproj", "{ED0D7700-7183-4B99-A2B1-A071D8E618E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BatmansInventory.Tests", "..\BatmansInventory.Tests\BatmansInventory.Tests.csproj", "{ED0D7700-7183-4B99-A2B1-A071D8E618E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

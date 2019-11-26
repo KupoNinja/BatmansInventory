@@ -3,6 +3,7 @@ using BatmansInventory.API.Models;
 using BatmansInventory.API.Services;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using Moq.EntityFrameworkCore;
 using System;
 using Xunit;
 

@@ -3,7 +3,6 @@ using BatmansInventory.API.Models;
 using BatmansInventory.API.Services;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using Moq.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -16,8 +15,8 @@ namespace BatmansInventory.Tests
 
         //public ItemsShould()
         //{
-        //    var options = new DbContextOptionsBuilder<DataContext>()
-        //    .UseInMemoryDatabase(databaseName: "BatmansInventoryDatabase").Options;
+        //    _options = new DbContextOptionsBuilder<DataContext>()
+        //        .UseInMemoryDatabase(databaseName: "BatmansInventory").Options;
         //}
 
         //[Fact]
@@ -59,7 +58,7 @@ namespace BatmansInventory.Tests
 
             //Assert
             Assert.IsType(repo.GetAllUnderSafetyStock(),
-                typeof(List<item>));
+                typeof(List<Item>));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BatmansInventory.API.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 namespace BatmansInventory.API.Models
 {
     //Should be DbName?
-    public class DataContext : DbContext
+    public class DataContext : DbContext, IDataContext
     {
         public DbSet<Item> Items { get; set; }
         public DbSet<PhysicalItem> PhysicalItems { get; set; }

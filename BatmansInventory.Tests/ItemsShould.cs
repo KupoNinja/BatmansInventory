@@ -22,9 +22,12 @@ namespace BatmansInventory.Tests
         //[Fact]
         //public void CreateNewItem()
         //{
-        //    Item item = new Item()
+        //    //Arrange
+        //    var options = new DbContextOptionsBuilder<DataContext>()
+        //        .UseInMemoryDatabase("BatmansInventoryDatabase").Options;
+        //    using var context = new DataContext(options);
+        //    Item fakeItem = new Item()
         //    {
-        //        ItemId = 5,
         //        PartName = "Bat Test",
         //        PartNumber = "BTE-747",
         //        OrderLeadTime = 6,
@@ -33,14 +36,13 @@ namespace BatmansInventory.Tests
         //        Created = DateTime.Now,
         //        CreatedBy = "Tester",
         //    };
-
-        //    //Act - Create Item
-        //    var repo = new ItemsService(mockContext.Object);
-        //    repo.CreateItem(item);
+        //    ItemsService repo = new ItemsService(context);
+            
+        //    //Act
+        //    repo.CreateItem(fakeItem);
 
         //    //Assert
-        //    mockSet.Verify(m => m.Add(It.IsAny<Item>()), Times.Once);
-        //    mockContext.Verify(m => m.SaveChanges(), Times.Once);
+        //    Assert.
         //}
 
         [Fact]
@@ -96,7 +98,5 @@ namespace BatmansInventory.Tests
             Assert.Contains(fakeItemUnderSafetyStock2, fakeListItemsUnderSafetyStock);
             Assert.DoesNotContain(fakeItemNotUnderSafetyStock, fakeListItemsUnderSafetyStock);
         }
-
-        
     }
 }

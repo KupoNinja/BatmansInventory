@@ -8,7 +8,7 @@ namespace BatmansInventory.API.Interfaces
     public interface IPhysicalItem
     {
         int PhysicalItemId { get; set; }
-        int ItemId { get; set; }
+        int InventoryItemId { get; set; }
         string SerialNumber { get; set; }
         int LocationId { get; set; }
         decimal Value { get; set; }

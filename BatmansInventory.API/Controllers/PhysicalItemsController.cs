@@ -12,14 +12,14 @@ namespace DatingApp.API.Controllers
     [ApiController]
     public class PhysicalItemsController : ControllerBase
     {
-        private readonly PhysicalItemsService _pis;
+        private readonly PhysicalItemsRepository _pir;
 
         [HttpGet]
         public ActionResult<IEnumerable<PhysicalItem>> GetAll()
         {
             try
             {
-                return Ok(_pis.GetAll());
+                return Ok(_pir.GetAll());
             }
             catch (Exception e)
             {
@@ -32,7 +32,7 @@ namespace DatingApp.API.Controllers
         {
             try
             {
-                return Ok(_pis.GetByLocation(locationId));
+                return Ok(_pir.GetByLocation(locationId));
             }
             catch (Exception e)
             {
@@ -41,11 +41,11 @@ namespace DatingApp.API.Controllers
         }
 
         [HttpGet("{itemId}/value")]
-        public ActionResult<decimal> GetTotalValueByItem(int itemId)
+        public ActionResult<decimal> GetTotalValueByItem(int inventoryItemId)
         {
             try
             {
-                return Ok(_pis.GetTotalValueByItem(itemId));
+                return Ok(_pir.GetTotalValueByInventoryItem(inventoryItemId));
             }
             catch (Exception e)
             {
@@ -58,7 +58,7 @@ namespace DatingApp.API.Controllers
         {
             try
             {
-                return Ok(_pis.GetBySerialNumber(serialNumber));
+                return Ok(_pir.GetBySerialNumber(serialNumber));
             }
             catch (Exception e)
             {
@@ -71,10 +71,10 @@ namespace DatingApp.API.Controllers
         {
             try
             {
-                PhysicalItem newItem = _pis.CreatePhysicalItem(pItemData);
+                PhysicalItem newItem = _pir.CreatePhysicalItem(pItemData);
 
                 //Unable to test Url
-                return Created("api/items/" + newItem.SerialNumber, newItem);
+                return Created("api/physicalitems/" + newItem.SerialNumber, newItem);
             }
             catch (Exception e)
             {
@@ -90,7 +90,7 @@ namespace DatingApp.API.Controllers
             {
                 pItemData.PhysicalItemId = id;
 
-                return Ok(_pis.UpdatePhysicalItem(pItemData));
+                return Ok(_pir.UpdatePhysicalItem(pItemData));
             }
             catch (Exception e)
             {
@@ -103,7 +103,7 @@ namespace DatingApp.API.Controllers
         {
             try
             {
-                return Ok(_pis.DeleteItem(id));
+                return Ok(_pir.DeletePhysicalItem(id));
             }
             catch (Exception e)
             {
@@ -111,9 +111,9 @@ namespace DatingApp.API.Controllers
             }
         }
 
-        public PhysicalItemsController(PhysicalItemsService pis)
+        public PhysicalItemsController(PhysicalItemsRepository pir)
         {
-            _pis = pis;
+            _pir = pir;
         }
     }
 }

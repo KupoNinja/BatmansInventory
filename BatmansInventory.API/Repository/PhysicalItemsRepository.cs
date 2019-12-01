@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BatmansInventory.API.Services
 {
-    public class PhysicalItemsService : IPhysicalItemService
+    public class PhysicalItemsRepository : IPhysicalItemRepository
     {
         private readonly DataContext _db;
 
@@ -45,9 +45,9 @@ namespace BatmansInventory.API.Services
         }
 
         //Should be in class?
-        public decimal GetTotalValueByItem(int itemId)
+        public decimal GetTotalValueByInventoryItem(int inventoryItemId)
         {
-            var pItemsCount = _db.PhysicalItems.Where(p => p.ItemId == itemId).ToList();
+            var pItemsCount = _db.PhysicalItems.Where(p => p.InventoryItemId == inventoryItemId).ToList();
 
             return pItemsCount.Sum(p => p.Value);
         }
@@ -57,7 +57,7 @@ namespace BatmansInventory.API.Services
             //Set PhysicalItem VM or DTO for Create
             var newPItem = new PhysicalItem();
             //Should bring back Item object
-            newPItem.ItemId = pItemData.ItemId;
+            newPItem.InventoryItemId = pItemData.InventoryItemId;
             newPItem.SerialNumber = pItemData.SerialNumber;
             //Should bring back location object
             newPItem.LocationId = pItemData.LocationId;
@@ -76,7 +76,7 @@ namespace BatmansInventory.API.Services
         {
             var pItemToUpdate = GetById(pItemData.PhysicalItemId);
             //Should have separate function to change ItemId for checks
-            pItemToUpdate.ItemId = pItemData.ItemId;
+            pItemToUpdate.InventoryItemId = pItemData.InventoryItemId;
             pItemToUpdate.SerialNumber = pItemData.SerialNumber;
             pItemToUpdate.LocationId = pItemData.LocationId;
             pItemToUpdate.Value = pItemData.Value;
@@ -91,7 +91,7 @@ namespace BatmansInventory.API.Services
             return pItemToUpdate;
         }
 
-        public bool DeleteItem(int id)
+        public bool DeletePhysicalItem(int id)
         {
             var pItemToDelete = GetById(id);
 
@@ -102,7 +102,7 @@ namespace BatmansInventory.API.Services
             return true;
         }
 
-        public PhysicalItemsService(DataContext db)
+        public PhysicalItemsRepository(DataContext db)
         {
             _db = db;
         }

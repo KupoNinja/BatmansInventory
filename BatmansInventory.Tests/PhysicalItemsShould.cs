@@ -18,7 +18,7 @@ namespace BatmansInventory.Tests
             using var context = new DataContext(options);
             PhysicalItem fakePhysicalItemSameLocation1 = new PhysicalItem()
             {
-                ItemId = 1,
+                InventoryItemId = 1,
                 SerialNumber = "A001",
                 LocationId = 1,
                 Value = 9.99m,
@@ -27,7 +27,7 @@ namespace BatmansInventory.Tests
             };
             PhysicalItem fakePhysicalItemSameLocation2 = new PhysicalItem()
             {
-                ItemId = 2,
+                InventoryItemId = 2,
                 SerialNumber = "A002",
                 LocationId = 1,
                 Value = 9.99m,
@@ -36,7 +36,7 @@ namespace BatmansInventory.Tests
             };
             PhysicalItem fakePhysicalItemDifferentLocation = new PhysicalItem()
             {
-                ItemId = 3,
+                InventoryItemId = 3,
                 SerialNumber = "B001",
                 LocationId = 3,
                 Value = 19.99m,
@@ -48,7 +48,7 @@ namespace BatmansInventory.Tests
             context.Add(fakePhysicalItemDifferentLocation);
             context.SaveChanges();
 
-            PhysicalItemsService repo = new PhysicalItemsService(context);
+            PhysicalItemsRepository repo = new PhysicalItemsRepository(context);
 
             //Act
             var fakeListByLocation = repo.GetByLocation(fakePhysicalItemSameLocation1.LocationId);

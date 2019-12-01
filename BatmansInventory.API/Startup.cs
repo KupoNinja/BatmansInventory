@@ -34,7 +34,7 @@ namespace BatmansInventory.API
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddTransient<InventoryItemsRepository>();
-            services.AddTransient<PhysicalItemsService>();
+            services.AddTransient<PhysicalItemsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

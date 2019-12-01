@@ -60,7 +60,7 @@ namespace BatmansInventory.Tests
         }
 
         [Fact]
-        public void GetTotalValue()
+        public void GiveTotalValueOfAnItem()
         {
         }
     }

@@ -33,7 +33,7 @@ namespace BatmansInventory.API
                 options => options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddTransient<ItemsService>();
+            services.AddTransient<InventoryItemsRepository>();
             services.AddTransient<PhysicalItemsService>();
         }
 

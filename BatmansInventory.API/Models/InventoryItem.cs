@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BatmansInventory.API.Models
 {
-    public class Item : IItem
+    public class InventoryItem : IInventoryItem
     {
-        public int ItemId { get; set; }
+        public int InventoryItemId { get; set; }
         public string PartName { get; set; }
         public string PartNumber { get; set; }
         public int OrderLeadTime { get; set; }

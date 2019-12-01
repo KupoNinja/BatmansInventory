@@ -54,7 +54,7 @@ namespace DatingApp.API.Controllers
         }
 
         [HttpGet("{serialNumber}")]
-        public ActionResult<Item> GetBySerialNumber(string serialNumber)
+        public ActionResult<InventoryItem> GetBySerialNumber(string serialNumber)
         {
             try
             {

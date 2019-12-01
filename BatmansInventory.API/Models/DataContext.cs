@@ -10,7 +10,7 @@ namespace BatmansInventory.API.Models
     //Should be DbName?
     public class DataContext : DbContext, IDataContext
     {
-        public DbSet<Item> Items { get; set; }
+        public DbSet<InventoryItem> InventoryItems { get; set; }
         public DbSet<PhysicalItem> PhysicalItems { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DataContext(DbContextOptions<DataContext> options) 
@@ -25,7 +25,7 @@ namespace BatmansInventory.API.Models
                 .Property(p => p.Value)
                 .HasColumnType("decimal(18,2)");
 
-            modelBuilder.Entity<Item>()
+            modelBuilder.Entity<InventoryItem>()
                 .HasIndex(i => i.PartNumber)
                 .IsUnique();
         }

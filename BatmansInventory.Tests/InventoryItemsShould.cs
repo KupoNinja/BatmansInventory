@@ -9,7 +9,7 @@ using Xunit;
 
 namespace BatmansInventory.Tests
 {
-    public class ItemsShould
+    public class InventoryItemsShould
     {
         //private DbContextOptionsBuilder<DataContext> _options;
 
@@ -46,13 +46,13 @@ namespace BatmansInventory.Tests
         //}
 
         [Fact]
-        public void RetrieveListOfItemsUnderSafetyStock()
+        public void RetrieveListOfInventoryItemsUnderSafetyStock()
         {
             //Arrange
             var options = new DbContextOptionsBuilder<DataContext>()
                 .UseInMemoryDatabase("BatmansInventoryDatabase").Options;
             using var context = new DataContext(options);
-            Item fakeItemUnderSafetyStock1 = new Item()
+            InventoryItem fakeInventoryItemUnderSafetyStock1 = new InventoryItem()
             {
                 PartName = "BataTest",
                 PartNumber = "BTE-321",
@@ -62,7 +62,7 @@ namespace BatmansInventory.Tests
                 Created = DateTime.Now,
                 CreatedBy = "Alfred"
             };
-            Item fakeItemUnderSafetyStock2 = new Item()
+            InventoryItem fakeInventoryItemUnderSafetyStock2 = new InventoryItem()
             {
                 PartName = "BataTest1",
                 PartNumber = "BTE-123",
@@ -72,7 +72,7 @@ namespace BatmansInventory.Tests
                 Created = DateTime.Now,
                 CreatedBy = "Alfred"
             };
-            Item fakeItemNotUnderSafetyStock = new Item()
+            InventoryItem fakeInventoryItemNotUnderSafetyStock = new InventoryItem()
             {
                 PartName = "Safe",
                 PartNumber = "SAF-321",
@@ -82,21 +82,21 @@ namespace BatmansInventory.Tests
                 Created = DateTime.Now,
                 CreatedBy = "Alfred"
             };
-            context.Add(fakeItemUnderSafetyStock1);
-            context.Add(fakeItemUnderSafetyStock2);
-            context.Add(fakeItemNotUnderSafetyStock);
+            context.Add(fakeInventoryItemUnderSafetyStock1);
+            context.Add(fakeInventoryItemUnderSafetyStock2);
+            context.Add(fakeInventoryItemNotUnderSafetyStock);
             context.SaveChanges();
 
-            ItemsService repo = new ItemsService(context);
+            InventoryItemsRepository repo = new InventoryItemsRepository(context);
 
             //Act
-            var fakeListItemsUnderSafetyStock = repo.GetAllUnderSafetyStock();
+            var fakeListInventoryItemsUnderSafetyStock = repo.GetAllUnderSafetyStock();
 
             //Assert
             //Multiple asserts Ok?
-            Assert.Contains(fakeItemUnderSafetyStock1, fakeListItemsUnderSafetyStock);
-            Assert.Contains(fakeItemUnderSafetyStock2, fakeListItemsUnderSafetyStock);
-            Assert.DoesNotContain(fakeItemNotUnderSafetyStock, fakeListItemsUnderSafetyStock);
+            Assert.Contains(fakeInventoryItemUnderSafetyStock1, fakeListInventoryItemsUnderSafetyStock);
+            Assert.Contains(fakeInventoryItemUnderSafetyStock2, fakeListInventoryItemsUnderSafetyStock);
+            Assert.DoesNotContain(fakeInventoryItemNotUnderSafetyStock, fakeListInventoryItemsUnderSafetyStock);
         }
     }
 }

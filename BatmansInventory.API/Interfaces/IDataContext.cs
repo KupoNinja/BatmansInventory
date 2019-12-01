@@ -9,7 +9,7 @@ namespace BatmansInventory.API.Interfaces
 {
     public interface IDataContext
     {
-        DbSet<Item> Items { get; set; }
+        DbSet<InventoryItem> InventoryItems { get; set; }
         DbSet<PhysicalItem> PhysicalItems { get; set; }
         DbSet<Location> Locations { get; set; }
     }

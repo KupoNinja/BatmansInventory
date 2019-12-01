@@ -10,16 +10,16 @@ namespace DatingApp.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ItemsController : ControllerBase
+    public class InventoryItemsController : ControllerBase
     {
-        private readonly ItemsService _its;
+        private readonly InventoryItemsRepository _iir;
 
         [HttpGet]
-        public ActionResult<IEnumerable<Item>> GetAll()
+        public ActionResult<IEnumerable<InventoryItem>> GetAll()
         {
             try
             {
-                return Ok(_its.GetAll());
+                return Ok(_iir.GetAll());
             }
             catch (Exception e)
             {
@@ -28,11 +28,11 @@ namespace DatingApp.API.Controllers
         }
 
         [HttpGet("{partNumber}")]
-        public ActionResult<Item> GetByPartNumber(string partNumber)
+        public ActionResult<InventoryItem> GetByPartNumber(string partNumber)
         {
             try
             {
-                return Ok(_its.GetByPartNumber(partNumber));
+                return Ok(_iir.GetByPartNumber(partNumber));
             }
             catch (Exception e)
             {
@@ -42,11 +42,11 @@ namespace DatingApp.API.Controllers
 
         //Unable to test...
         [HttpGet]
-        public ActionResult<IEnumerable<Item>> GetAllUnderSafetyStock()
+        public ActionResult<IEnumerable<InventoryItem>> GetAllUnderSafetyStock()
         {
             try
             {
-                return Ok(_its.GetAllUnderSafetyStock());
+                return Ok(_iir.GetAllUnderSafetyStock());
             }
             catch (Exception e)
             {
@@ -55,14 +55,14 @@ namespace DatingApp.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Item> CreateItem([FromBody] Item itemData)
+        public ActionResult<InventoryItem> CreateInventoryItem([FromBody] InventoryItem inventoryItemData)
         {
             try
             {
-                Item newItem = _its.CreateItem(itemData);
+                InventoryItem newInventoryItem = _iir.CreateInventoryItem(inventoryItemData);
 
                 //Unable to test Url
-                return Created("api/items/" + newItem.PartNumber, newItem);
+                return Created("api/inventoryitems/" + newInventoryItem.PartNumber, newInventoryItem);
             }
             catch (Exception e)
             {
@@ -72,13 +72,13 @@ namespace DatingApp.API.Controllers
         }
 
         [HttpPut("{partNumber}")]
-        public ActionResult<Item> UpdateItem(string partNumber, [FromBody] Item itemData)
+        public ActionResult<InventoryItem> UpdateInventoryItem(string partNumber, [FromBody] InventoryItem inventoryItemData)
         {
             try
             {
-                itemData.PartNumber = partNumber;
+                inventoryItemData.PartNumber = partNumber;
 
-                return Ok(_its.UpdateItem(itemData));
+                return Ok(_iir.UpdateInventoryItem(inventoryItemData));
             }
             catch (Exception e)
             {
@@ -91,7 +91,7 @@ namespace DatingApp.API.Controllers
         {
             try
             {
-                return Ok(_its.DeleteItem(id));
+                return Ok(_iir.DeleteInventoryItem(id));
             }
             catch (Exception e)
             {
@@ -99,9 +99,9 @@ namespace DatingApp.API.Controllers
             }
         }
 
-        public ItemsController(ItemsService its)
+        public InventoryItemsController(InventoryItemsRepository iir)
         {
-            _its = its;
+            _iir = iir;
         }
     }
 }

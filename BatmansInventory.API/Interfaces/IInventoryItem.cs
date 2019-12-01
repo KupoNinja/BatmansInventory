@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace BatmansInventory.API.Interfaces
 {
-    public interface IItem
+    public interface IInventoryItem
     {
-        int ItemId { get; set; }
+        int InventoryItemId { get; set; }
         string PartName { get; set; }
         string PartNumber { get; set; }
         int OrderLeadTime { get; set; }

@@ -11,13 +11,13 @@ namespace BatmansInventory.Tests
 {
     public class InventoryItemsShould
     {
-        //private DbContextOptionsBuilder<DataContext> _options;
+        private DbContextOptionsBuilder<DataContext> _options;
 
-        //public ItemsShould()
-        //{
-        //    _options = new DbContextOptionsBuilder<DataContext>()
-        //        .UseInMemoryDatabase(databaseName: "BatmansInventory").Options;
-        //}
+        public InventoryItemsShould()
+        {
+            //_options = new DbContextOptionsBuilder<DataContext>()
+            //    .UseInMemoryDatabase(databaseName: "BatmansInventory").Options;
+        }
 
         //[Fact]
         //public void CreateNewItem()
@@ -37,7 +37,7 @@ namespace BatmansInventory.Tests
         //        CreatedBy = "Tester",
         //    };
         //    ItemsService repo = new ItemsService(context);
-            
+
         //    //Act
         //    repo.CreateItem(fakeItem);
 

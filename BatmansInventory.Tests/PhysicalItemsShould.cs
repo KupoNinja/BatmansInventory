@@ -59,6 +59,7 @@ namespace BatmansInventory.Tests
             Assert.DoesNotContain(fakePhysicalItemDifferentLocation, fakeListByLocation);
         }
 
+        //Breaks when you run all tests but passes when tested individually
         [Fact]
         public void GiveTotalValueOfAnItem()
         {

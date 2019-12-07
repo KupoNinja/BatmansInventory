@@ -21,10 +21,10 @@ namespace BatmansInventory.API.Services
 
         public InventoryItem GetById(int id)
         {
-            var inventoryItems = _db.InventoryItems.FirstOrDefault(i => i.InventoryItemId == id);
-            if (inventoryItems == null) { throw new Exception("That inventory item doesn't exist. Might be a new item Lucius can invent!"); }
+            var inventoryItem = _db.InventoryItems.FirstOrDefault(i => i.InventoryItemId == id);
+            if (inventoryItem == null) { throw new Exception("That inventory item doesn't exist. Might be a new item Lucius can invent!"); }
 
-            return inventoryItems;
+            return inventoryItem;
         }
 
         public List<InventoryItem> GetAllUnderSafetyStock()

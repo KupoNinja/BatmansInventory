@@ -8,12 +8,12 @@ namespace BatmansInventory.API.Interfaces
 {
     public interface IInventoryItemsRepository
     {
-        List<InventoryItem> GetAll();
+        IEnumerable<InventoryItem> GetAll();
         InventoryItem GetById(int id);
-        List<InventoryItem> GetAllUnderSafetyStock();
+        IEnumerable<InventoryItem> GetAllUnderSafetyStock();
         InventoryItem GetByPartNumber(string partNumber);
-        InventoryItem CreateInventoryItem(InventoryItem inventoryItemData);
-        InventoryItem UpdateInventoryItem(InventoryItem inventoryItemData);
-        bool DeleteInventoryItem(int id);
+        InventoryItem CreateInventoryItem(InventoryItem inventoryItemToCreate);
+        InventoryItem UpdateInventoryItem(InventoryItem inventoryItemToUpdate);
+        bool DeleteInventoryItem(InventoryItem inventoryItemToDelete);
     }
 }

@@ -104,11 +104,11 @@ namespace BatmansInventory.Tests
                 CreatedBy = "Tester",
             };
 
-            InventoryItemsRepository repo = new InventoryItemsRepository(context);
+            InventoryItemsRepository sut = new InventoryItemsRepository(context);
 
             //Act
-            var newFakeInventoryItem = repo.CreateInventoryItem(fakeInventoryItem);
-            var fakeListOfInventoryItems = repo.GetAll();
+            var newFakeInventoryItem = sut.CreateInventoryItem(fakeInventoryItem);
+            var fakeListOfInventoryItems = sut.GetAll();
 
             //Assert
             Assert.Contains(newFakeInventoryItem, fakeListOfInventoryItems);
@@ -120,10 +120,10 @@ namespace BatmansInventory.Tests
             //Arrange
             var context = GetPopulatedInMemoryDbContext();
 
-            InventoryItemsRepository repo = new InventoryItemsRepository(context);
+            InventoryItemsRepository sut = new InventoryItemsRepository(context);
 
             //Act
-            var fakeInventoryItemToRetrieve = repo.GetById(2);
+            var fakeInventoryItemToRetrieve = sut.GetById(2);
 
             //Assert
             Assert.Equal(2, fakeInventoryItemToRetrieve.InventoryItemId);
@@ -135,10 +135,10 @@ namespace BatmansInventory.Tests
             //Arrange
             var context = GetPopulatedInMemoryDbContext();
 
-            InventoryItemsRepository repo = new InventoryItemsRepository(context);
+            InventoryItemsRepository sut = new InventoryItemsRepository(context);
 
             //Act
-            var fakeInventoryItemToRetrieve = repo.GetByPartNumber("BTE-321");
+            var fakeInventoryItemToRetrieve = sut.GetByPartNumber("BTE-321");
 
             //Assert
             Assert.Equal("BTE-321", fakeInventoryItemToRetrieve.PartNumber);
@@ -150,13 +150,13 @@ namespace BatmansInventory.Tests
             //Arrange
             var context = GetPopulatedInMemoryDbContext();
 
-            InventoryItemsRepository repo = new InventoryItemsRepository(context);
+            InventoryItemsRepository sut = new InventoryItemsRepository(context);
 
-            var fakeInventoryItemToUpdate = repo.GetById(1);
+            var fakeInventoryItemToUpdate = sut.GetById(1);
             fakeInventoryItemToUpdate.PartName = "Updated Item";
 
             //Act
-            var updatedFakeInventoryItem = repo.UpdateInventoryItem(fakeInventoryItemToUpdate);
+            var updatedFakeInventoryItem = sut.UpdateInventoryItem(fakeInventoryItemToUpdate);
 
             //Assert
             Assert.Equal("Updated Item", updatedFakeInventoryItem.PartName);
@@ -168,15 +168,15 @@ namespace BatmansInventory.Tests
             //Arrange
             var context = GetPopulatedInMemoryDbContext();
 
-            InventoryItemsRepository repo = new InventoryItemsRepository(context);
+            InventoryItemsRepository sut = new InventoryItemsRepository(context);
 
 
             //Act
-            var fakeListInventoryItemsUnderSafetyStock = repo.GetAllUnderSafetyStock();
+            var fakeListInventoryItemsUnderSafetyStock = sut.GetAllUnderSafetyStock();
 
-            var fakeInventoryItemUnderSafetyStock1 = repo.GetById(3);
-            var fakeInventoryItemUnderSafetyStock2 = repo.GetById(4);
-            var fakeInventoryItemNotUnderSafetyStock = repo.GetById(5);
+            var fakeInventoryItemUnderSafetyStock1 = sut.GetById(3);
+            var fakeInventoryItemUnderSafetyStock2 = sut.GetById(4);
+            var fakeInventoryItemNotUnderSafetyStock = sut.GetById(5);
 
             //Assert
             //Multiple asserts Ok?

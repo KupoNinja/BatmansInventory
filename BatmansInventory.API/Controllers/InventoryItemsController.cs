@@ -13,11 +13,11 @@ namespace DatingApp.API.Controllers
     [ApiController]
     public class InventoryItemsController : ControllerBase
     {
-        private readonly IInventoryItemsRepository _iir;
+        private readonly IInventoryItemsService _iis;
 
-        public InventoryItemsController(IInventoryItemsRepository iir)
+        public InventoryItemsController(IInventoryItemsService iis)
         {
-            _iir = iir;
+            _iis = iis;
         }
 
         [HttpGet]
@@ -25,7 +25,7 @@ namespace DatingApp.API.Controllers
         {
             try
             {
-                return Ok(_iir.GetAll());
+                return Ok(_iis.GetAll());
             }
             catch (Exception e)
             {
@@ -38,7 +38,7 @@ namespace DatingApp.API.Controllers
         {
             try
             {
-                return Ok(_iir.GetByPartNumber(partNumber));
+                return Ok(_iis.GetByPartNumber(partNumber));
             }
             catch (Exception e)
             {
@@ -52,7 +52,7 @@ namespace DatingApp.API.Controllers
         {
             try
             {
-                return Ok(_iir.GetAllUnderSafetyStock());
+                return Ok(_iis.GetAllUnderSafetyStock());
             }
             catch (Exception e)
             {
@@ -65,7 +65,8 @@ namespace DatingApp.API.Controllers
         {
             try
             {
-                InventoryItem newInventoryItem = _iir.CreateInventoryItem(inventoryItemData);
+                //Set Item VM or DTO for Create
+                InventoryItem newInventoryItem = _iis.CreateInventoryItem(inventoryItemData);
 
                 //Unable to test Url
                 return Created("api/inventoryitems/" + newInventoryItem.PartNumber, newInventoryItem);
@@ -84,7 +85,7 @@ namespace DatingApp.API.Controllers
             {
                 inventoryItemData.PartNumber = partNumber;
 
-                return Ok(_iir.UpdateInventoryItem(inventoryItemData));
+                return Ok(_iis.UpdateInventoryItem(inventoryItemData));
             }
             catch (Exception e)
             {
@@ -97,7 +98,7 @@ namespace DatingApp.API.Controllers
         {
             try
             {
-                return Ok(_iir.DeleteInventoryItem(id));
+                return Ok(_iis.DeleteInventoryItem(id));
             }
             catch (Exception e)
             {

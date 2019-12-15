@@ -16,10 +16,9 @@ namespace BatmansInventory.API.Services
             _db = db;
         }
 
-        public List<InventoryItem> GetAll()
+        public IEnumerable<InventoryItem> GetAll()
         {
             var inventoryItems = _db.InventoryItems.ToList();
-            if (inventoryItems == null || inventoryItems.Count == 0) { throw new Exception("There are no inventory items. Looks like a jokester wiped out his database. HaHAhA..."); }
 
             return inventoryItems;
         }
@@ -27,14 +26,12 @@ namespace BatmansInventory.API.Services
         public InventoryItem GetById(int id)
         {
             var inventoryItem = _db.InventoryItems.FirstOrDefault(i => i.InventoryItemId == id);
-            if (inventoryItem == null) { throw new Exception("That inventory item doesn't exist. Might be a new item Lucius can invent!"); }
 
             return inventoryItem;
         }
 
-        public List<InventoryItem> GetAllUnderSafetyStock()
+        public IEnumerable<InventoryItem> GetAllUnderSafetyStock()
         {
-            //Think of a shorter name
             var inventoryItemsUnderSafetyStock = _db.InventoryItems.Where(i => i.QuantityOnHand < i.SafetyStock).ToList();
 
             return inventoryItemsUnderSafetyStock;
@@ -43,46 +40,21 @@ namespace BatmansInventory.API.Services
         public InventoryItem GetByPartNumber(string partNumber)
         {
             var inventoryItems = _db.InventoryItems.FirstOrDefault(i => i.PartNumber == partNumber);
-            if (inventoryItems == null) { throw new Exception("That inventory item doesn't exist. Might be a new item Lucius can invent!"); }
 
             return inventoryItems;
         }
 
 
-        public InventoryItem CreateInventoryItem(InventoryItem inventoryItemData)
+        public InventoryItem CreateInventoryItem(InventoryItem inventoryItemToCreate)
         {
-            //Set Item VM or DTO for Create
-            var newInventoryItem = new InventoryItem();
-            newInventoryItem.PartName = inventoryItemData.PartName;
-            //Validate for PartNumber convention... What's the convention?
-            //Does not throw exception if PartNumber is not unique
-            newInventoryItem.PartNumber = inventoryItemData.PartNumber;
-            newInventoryItem.OrderLeadTime = inventoryItemData.OrderLeadTime;
-            //Default QuantityOnHand to 0?
-            newInventoryItem.QuantityOnHand = inventoryItemData.QuantityOnHand;
-            newInventoryItem.SafetyStock = inventoryItemData.SafetyStock;
-            newInventoryItem.Created = DateTime.Now;
-            //Get UserId to auto Createdby
-            newInventoryItem.CreatedBy = inventoryItemData.CreatedBy;
-
-            _db.InventoryItems.Add(newInventoryItem);
+            _db.InventoryItems.Add(inventoryItemToCreate);
             _db.SaveChanges();
 
-            return newInventoryItem;
+            return inventoryItemToCreate;
         }
 
-        public InventoryItem UpdateInventoryItem(InventoryItem inventoryItemData)
+        public InventoryItem UpdateInventoryItem(InventoryItem inventoryItemToUpdate)
         {
-            //Change this to get by id
-            var inventoryItemToUpdate = GetById(inventoryItemData.InventoryItemId);
-            inventoryItemToUpdate.PartName = inventoryItemData.PartName;
-            //How to handle if needing to change PartNumber?
-            inventoryItemToUpdate.OrderLeadTime = inventoryItemData.OrderLeadTime;
-            inventoryItemToUpdate.QuantityOnHand = inventoryItemData.QuantityOnHand;
-            inventoryItemToUpdate.SafetyStock = inventoryItemData.SafetyStock;
-            inventoryItemToUpdate.LastUpdated = DateTime.Now;
-            inventoryItemToUpdate.LastUpdatedBy = inventoryItemData.LastUpdatedBy;
-
             //Added for disconnected state
             _db.InventoryItems.Update(inventoryItemToUpdate);
             _db.SaveChanges();
@@ -90,10 +62,8 @@ namespace BatmansInventory.API.Services
             return inventoryItemToUpdate;
         }
 
-        public bool DeleteInventoryItem(int id)
+        public bool DeleteInventoryItem(InventoryItem inventoryItemToDelete)
         {
-            var inventoryItemToDelete = GetById(id);
-
             _db.InventoryItems.Remove(inventoryItemToDelete);
             _db.SaveChanges();
 

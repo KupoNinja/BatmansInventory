@@ -59,13 +59,13 @@ namespace BatmansInventory.Tests
             //Arrange
             var context = GetPopulatedInMemoryDbContext();
 
-            PhysicalItemsRepository repo = new PhysicalItemsRepository(context);
-            var fakePhysicalItemSameLocation1 = repo.GetById(1);
-            var fakePhysicalItemSameLocation2 = repo.GetById(2);
-            var fakePhysicalItemDifferentLocation = repo.GetById(3);
+            PhysicalItemsRepository sut = new PhysicalItemsRepository(context);
+            var fakePhysicalItemSameLocation1 = sut.GetById(1);
+            var fakePhysicalItemSameLocation2 = sut.GetById(2);
+            var fakePhysicalItemDifferentLocation = sut.GetById(3);
 
             //Act
-            var fakeListByLocation = repo.GetByLocation(1);
+            var fakeListByLocation = sut.GetByLocation(1);
 
             //Assert
             Assert.Contains(fakePhysicalItemSameLocation1, fakeListByLocation);
@@ -80,11 +80,11 @@ namespace BatmansInventory.Tests
             //Arrange
             var context = GetPopulatedInMemoryDbContext();
 
-            PhysicalItemsRepository repo = new PhysicalItemsRepository(context);
-            var fakePhysicalItem1 = repo.GetById(1);
+            PhysicalItemsRepository sut = new PhysicalItemsRepository(context);
+            var fakePhysicalItem1 = sut.GetById(1);
 
             //Act
-            var totalValue = repo.GetTotalValueByInventoryItem(fakePhysicalItem1.InventoryItemId);
+            var totalValue = sut.GetTotalValueByInventoryItem(fakePhysicalItem1.InventoryItemId);
 
             //Assert
             Assert.Equal(19.98m, totalValue);

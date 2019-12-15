@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BatmansInventory.API.Interfaces;
 using BatmansInventory.API.Models;
 using BatmansInventory.API.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,12 @@ namespace DatingApp.API.Controllers
     [ApiController]
     public class PhysicalItemsController : ControllerBase
     {
-        private readonly PhysicalItemsRepository _pir;
+        private readonly IPhysicalItemsRepository _pir;
+
+        public PhysicalItemsController(IPhysicalItemsRepository pir)
+        {
+            _pir = pir;
+        }
 
         [HttpGet]
         public ActionResult<IEnumerable<PhysicalItem>> GetAll()
@@ -109,11 +115,6 @@ namespace DatingApp.API.Controllers
             {
                 return BadRequest(e.Message);
             }
-        }
-
-        public PhysicalItemsController(PhysicalItemsRepository pir)
-        {
-            _pir = pir;
         }
     }
 }

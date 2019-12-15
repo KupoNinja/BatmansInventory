@@ -11,6 +11,11 @@ namespace BatmansInventory.API.Services
     {
         private readonly DataContext _db;
 
+        public InventoryItemsRepository(DataContext db)
+        {
+            _db = db;
+        }
+
         public List<InventoryItem> GetAll()
         {
             var inventoryItems = _db.InventoryItems.ToList();
@@ -94,11 +99,6 @@ namespace BatmansInventory.API.Services
 
             //Don't like this... Tired...
             return true;
-        }
-
-        public InventoryItemsRepository(DataContext db)
-        {
-            _db = db;
         }
     }
 }

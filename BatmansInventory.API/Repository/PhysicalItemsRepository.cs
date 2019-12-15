@@ -8,9 +8,14 @@ using System.Threading.Tasks;
 
 namespace BatmansInventory.API.Services
 {
-    public class PhysicalItemsRepository : IPhysicalItemRepository
+    public class PhysicalItemsRepository : IPhysicalItemsRepository
     {
         private readonly DataContext _db;
+
+        public PhysicalItemsRepository(DataContext db)
+        {
+            _db = db;
+        }
 
         public List<PhysicalItem> GetAll()
         {
@@ -100,11 +105,6 @@ namespace BatmansInventory.API.Services
 
             //Don't like this... Tired...
             return true;
-        }
-
-        public PhysicalItemsRepository(DataContext db)
-        {
-            _db = db;
         }
     }
 }

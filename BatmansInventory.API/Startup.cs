@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BatmansInventory.API.Interfaces;
 using BatmansInventory.API.Models;
 using BatmansInventory.API.Services;
 using Microsoft.AspNetCore.Builder;
@@ -33,8 +34,8 @@ namespace BatmansInventory.API
                 options => options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddTransient<InventoryItemsRepository>();
-            services.AddTransient<PhysicalItemsRepository>();
+            services.AddTransient<IInventoryItemsRepository, InventoryItemsRepository>();
+            services.AddTransient<IPhysicalItemsRepository, PhysicalItemsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BatmansInventory.API.Interfaces
 {
-    public interface IPhysicalItemRepository
+    public interface IPhysicalItemsRepository
     {
         List<PhysicalItem> GetAll();
         PhysicalItem GetById(int id);

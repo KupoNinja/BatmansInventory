@@ -9,15 +9,15 @@ namespace BatmansInventory.Tests
 {
     public class PhysicalItemsShould
     {
-        [Fact]
-        public void RetrieveListOfPhysicalItemsByLocation()
+        private DataContext GetPopulatedInMemoryDbContext()
         {
-            //Arrange
             var options = new DbContextOptionsBuilder<DataContext>()
-                .UseInMemoryDatabase("BatmansInventoryDatabase").Options;
-            using var context = new DataContext(options);
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+            var context = new DataContext(options);
             PhysicalItem fakePhysicalItemSameLocation1 = new PhysicalItem()
             {
+                PhysicalItemId = 1,
                 InventoryItemId = 1,
                 SerialNumber = "A001",
                 LocationId = 1,
@@ -27,7 +27,8 @@ namespace BatmansInventory.Tests
             };
             PhysicalItem fakePhysicalItemSameLocation2 = new PhysicalItem()
             {
-                InventoryItemId = 2,
+                PhysicalItemId = 2,
+                InventoryItemId = 1,
                 SerialNumber = "A002",
                 LocationId = 1,
                 Value = 9.99m,
@@ -36,7 +37,8 @@ namespace BatmansInventory.Tests
             };
             PhysicalItem fakePhysicalItemDifferentLocation = new PhysicalItem()
             {
-                InventoryItemId = 3,
+                PhysicalItemId = 3,
+                InventoryItemId = 2,
                 SerialNumber = "B001",
                 LocationId = 3,
                 Value = 19.99m,
@@ -48,10 +50,22 @@ namespace BatmansInventory.Tests
             context.Add(fakePhysicalItemDifferentLocation);
             context.SaveChanges();
 
+            return context;
+        }
+
+        [Fact]
+        public void RetrieveListOfPhysicalItemsByLocation()
+        {
+            //Arrange
+            var context = GetPopulatedInMemoryDbContext();
+
             PhysicalItemsRepository repo = new PhysicalItemsRepository(context);
+            var fakePhysicalItemSameLocation1 = repo.GetById(1);
+            var fakePhysicalItemSameLocation2 = repo.GetById(2);
+            var fakePhysicalItemDifferentLocation = repo.GetById(3);
 
             //Act
-            var fakeListByLocation = repo.GetByLocation(fakePhysicalItemSameLocation1.LocationId);
+            var fakeListByLocation = repo.GetByLocation(1);
 
             //Assert
             Assert.Contains(fakePhysicalItemSameLocation1, fakeListByLocation);
@@ -64,48 +78,16 @@ namespace BatmansInventory.Tests
         public void GiveTotalValueOfAnItem()
         {
             //Arrange
-            var options = new DbContextOptionsBuilder<DataContext>()
-                .UseInMemoryDatabase("BatmansInventoryDatabase").Options;
-            using var context = new DataContext(options);
-            PhysicalItem fakePhysicalItem1 = new PhysicalItem()
-            {
-                InventoryItemId = 1,
-                SerialNumber = "A001",
-                LocationId = 1,
-                Value = 9.99m,
-                Created = DateTime.Now,
-                CreatedBy = "Lucius"
-            };
-            PhysicalItem fakePhysicalItem2 = new PhysicalItem()
-            {
-                InventoryItemId = 3,
-                SerialNumber = "A002",
-                LocationId = 1,
-                Value = 9.99m,
-                Created = DateTime.Now,
-                CreatedBy = "Lucius"
-            };
-            PhysicalItem fakePhysicalItem3 = new PhysicalItem()
-            {
-                InventoryItemId = 3,
-                SerialNumber = "B001",
-                LocationId = 3,
-                Value = 19.99m,
-                Created = DateTime.Now,
-                CreatedBy = "Lucius"
-            };
-            context.Add(fakePhysicalItem1);
-            context.Add(fakePhysicalItem2);
-            context.Add(fakePhysicalItem3);
-            context.SaveChanges();
+            var context = GetPopulatedInMemoryDbContext();
 
             PhysicalItemsRepository repo = new PhysicalItemsRepository(context);
+            var fakePhysicalItem1 = repo.GetById(1);
 
             //Act
-            var totalValue = repo.GetTotalValueByInventoryItem(fakePhysicalItem2.InventoryItemId);
+            var totalValue = repo.GetTotalValueByInventoryItem(fakePhysicalItem1.InventoryItemId);
 
             //Assert
-            Assert.Equal(29.98m, totalValue);
+            Assert.Equal(19.98m, totalValue);
         }
     }
 }

@@ -12,23 +12,17 @@ namespace BatmansInventory.Tests
 {
     public class InventoryItemsShould
     {
-        //private DbContextOptionsBuilder<DataContext> _options;
-
-        //public InventoryItemsShould()
-        //{
-        //    //_options = new DbContextOptionsBuilder<DataContext>()
-        //    //    .UseInMemoryDatabase(databaseName: "BatmansInventory").Options;
-        //}
-
-        [Fact]
-        public void CreateNewInventoryItemIntoTheDatabase()
+        private DataContext GetPopulatedInMemoryDbContext()
         {
-            //Arrange
+            // Naming in-memory db by GUID so every test ran is a new db so it's not affected by previous runs
             var options = new DbContextOptionsBuilder<DataContext>()
-                .UseInMemoryDatabase("BatmansInventoryDatabase").Options;
-            using var context = new DataContext(options);
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+            var context = new DataContext(options);
+
             InventoryItem fakeInventoryItem = new InventoryItem()
             {
+                InventoryItemId = 1,
                 PartName = "Bat Test",
                 PartNumber = "BTE-747",
                 OrderLeadTime = 6,
@@ -37,6 +31,79 @@ namespace BatmansInventory.Tests
                 Created = DateTime.Now,
                 CreatedBy = "Tester",
             };
+            InventoryItem fakeInventoryItemToRetrieve = new InventoryItem()
+            {
+                InventoryItemId = 2,
+                PartName = "BataTest",
+                PartNumber = "BTE-321",
+                OrderLeadTime = 6,
+                QuantityOnHand = 5,
+                SafetyStock = 10,
+                Created = DateTime.Now,
+                CreatedBy = "Alfred"
+            };
+            InventoryItem fakeInventoryItemUnderSafetyStock1 = new InventoryItem()
+            {
+                InventoryItemId = 3,
+                PartName = "BataTest",
+                PartNumber = "BTE-321",
+                OrderLeadTime = 6,
+                QuantityOnHand = 5,
+                SafetyStock = 10,
+                Created = DateTime.Now,
+                CreatedBy = "Alfred"
+            };
+            InventoryItem fakeInventoryItemUnderSafetyStock2 = new InventoryItem()
+            {
+                InventoryItemId = 4,
+                PartName = "BataTest1",
+                PartNumber = "BTE-123",
+                OrderLeadTime = 4,
+                QuantityOnHand = 2,
+                SafetyStock = 5,
+                Created = DateTime.Now,
+                CreatedBy = "Alfred"
+            };
+            InventoryItem fakeInventoryItemNotUnderSafetyStock = new InventoryItem()
+            {
+                InventoryItemId = 5,
+                PartName = "Safe",
+                PartNumber = "SAF-321",
+                OrderLeadTime = 6,
+                QuantityOnHand = 12,
+                SafetyStock = 7,
+                Created = DateTime.Now,
+                CreatedBy = "Alfred"
+            };
+
+            context.Add(fakeInventoryItem);
+            context.Add(fakeInventoryItemToRetrieve);
+            context.Add(fakeInventoryItemUnderSafetyStock1);
+            context.Add(fakeInventoryItemUnderSafetyStock2);
+            context.Add(fakeInventoryItemNotUnderSafetyStock);
+            context.SaveChanges();
+
+            return context;
+        }
+
+        [Fact]
+        public void CreateNewInventoryItemIntoTheDatabase()
+        {
+            //Arrange
+            var context = GetPopulatedInMemoryDbContext();
+
+            InventoryItem fakeInventoryItem = new InventoryItem()
+            {
+                InventoryItemId = 1,
+                PartName = "Bat Test",
+                PartNumber = "BTE-747",
+                OrderLeadTime = 6,
+                QuantityOnHand = 4,
+                SafetyStock = 5,
+                Created = DateTime.Now,
+                CreatedBy = "Tester",
+            };
+
             InventoryItemsRepository repo = new InventoryItemsRepository(context);
 
             //Act
@@ -48,25 +115,42 @@ namespace BatmansInventory.Tests
         }
 
         [Fact]
-        public void UpdateInventoryItem()
+        public void ReturnInventoryItemByItsId()
         {
             //Arrange
-            var options = new DbContextOptionsBuilder<DataContext>()
-                .UseInMemoryDatabase("BatmansInventoryDatabase").Options;
-            using var context = new DataContext(options);
-            InventoryItem fakeInventoryItem = new InventoryItem()
-            {
-                PartName = "Bat Test",
-                PartNumber = "BTE-747",
-                OrderLeadTime = 6,
-                QuantityOnHand = 4,
-                SafetyStock = 5,
-                Created = DateTime.Now,
-                CreatedBy = "Tester",
-            };
+            var context = GetPopulatedInMemoryDbContext();
+
             InventoryItemsRepository repo = new InventoryItemsRepository(context);
-            context.Add(fakeInventoryItem);
-            context.SaveChanges();
+
+            //Act
+            var fakeInventoryItemToRetrieve = repo.GetById(2);
+
+            //Assert
+            Assert.Equal(2, fakeInventoryItemToRetrieve.InventoryItemId);
+        }
+
+        [Fact]
+        public void RetrieveInventoryItemByPartNumber()
+        {
+            //Arrange
+            var context = GetPopulatedInMemoryDbContext();
+
+            InventoryItemsRepository repo = new InventoryItemsRepository(context);
+
+            //Act
+            var fakeInventoryItemToRetrieve = repo.GetByPartNumber("BTE-321");
+
+            //Assert
+            Assert.Equal("BTE-321", fakeInventoryItemToRetrieve.PartNumber);
+        }
+
+        [Fact]
+        public void UpdateTheSelectedInventoryItem()
+        {
+            //Arrange
+            var context = GetPopulatedInMemoryDbContext();
+
+            InventoryItemsRepository repo = new InventoryItemsRepository(context);
 
             var fakeInventoryItemToUpdate = repo.GetById(1);
             fakeInventoryItemToUpdate.PartName = "Updated Item";
@@ -82,170 +166,23 @@ namespace BatmansInventory.Tests
         public void RetrieveListOfInventoryItemsUnderSafetyStock()
         {
             //Arrange
-            var options = new DbContextOptionsBuilder<DataContext>()
-                .UseInMemoryDatabase("BatmansInventoryDatabase").Options;
-            using var context = new DataContext(options);
-            InventoryItem fakeInventoryItemUnderSafetyStock1 = new InventoryItem()
-            {
-                PartName = "BataTest",
-                PartNumber = "BTE-321",
-                OrderLeadTime = 6,
-                QuantityOnHand = 5,
-                SafetyStock = 10,
-                Created = DateTime.Now,
-                CreatedBy = "Alfred"
-            };
-            InventoryItem fakeInventoryItemUnderSafetyStock2 = new InventoryItem()
-            {
-                PartName = "BataTest1",
-                PartNumber = "BTE-123",
-                OrderLeadTime = 4,
-                QuantityOnHand = 2,
-                SafetyStock = 5,
-                Created = DateTime.Now,
-                CreatedBy = "Alfred"
-            };
-            InventoryItem fakeInventoryItemNotUnderSafetyStock = new InventoryItem()
-            {
-                PartName = "Safe",
-                PartNumber = "SAF-321",
-                OrderLeadTime = 6,
-                QuantityOnHand = 12,
-                SafetyStock = 7,
-                Created = DateTime.Now,
-                CreatedBy = "Alfred"
-            };
-            context.Add(fakeInventoryItemUnderSafetyStock1);
-            context.Add(fakeInventoryItemUnderSafetyStock2);
-            context.Add(fakeInventoryItemNotUnderSafetyStock);
-            context.SaveChanges();
+            var context = GetPopulatedInMemoryDbContext();
 
             InventoryItemsRepository repo = new InventoryItemsRepository(context);
 
+
             //Act
             var fakeListInventoryItemsUnderSafetyStock = repo.GetAllUnderSafetyStock();
+
+            var fakeInventoryItemUnderSafetyStock1 = repo.GetById(3);
+            var fakeInventoryItemUnderSafetyStock2 = repo.GetById(4);
+            var fakeInventoryItemNotUnderSafetyStock = repo.GetById(5);
 
             //Assert
             //Multiple asserts Ok?
             Assert.Contains(fakeInventoryItemUnderSafetyStock1, fakeListInventoryItemsUnderSafetyStock);
             Assert.Contains(fakeInventoryItemUnderSafetyStock2, fakeListInventoryItemsUnderSafetyStock);
             Assert.DoesNotContain(fakeInventoryItemNotUnderSafetyStock, fakeListInventoryItemsUnderSafetyStock);
-        }
-
-        //Breaks when you run all tests but passes when tested individually
-        //Does the DataContext persist?
-        [Fact]
-        public void RetrieveInventoryItemById()
-        {
-            //Arrange
-            var options = new DbContextOptionsBuilder<DataContext>()
-                .UseInMemoryDatabase("BatmansInventoryDatabase").Options;
-            using var context = new DataContext(options);
-            InventoryItem fakeInventoryItemToRetrieve = new InventoryItem()
-            {
-                PartName = "BataTest",
-                PartNumber = "BTE-321",
-                OrderLeadTime = 6,
-                QuantityOnHand = 5,
-                SafetyStock = 10,
-                Created = DateTime.Now,
-                CreatedBy = "Alfred"
-            };
-            InventoryItem fakeInventoryItem1 = new InventoryItem()
-            {
-                PartName = "BataTest1",
-                PartNumber = "BTE-123",
-                OrderLeadTime = 4,
-                QuantityOnHand = 2,
-                SafetyStock = 5,
-                Created = DateTime.Now,
-                CreatedBy = "Alfred"
-            };
-            InventoryItem fakeInventoryItem2 = new InventoryItem()
-            {
-                PartName = "Safe",
-                PartNumber = "SAF-321",
-                OrderLeadTime = 6,
-                QuantityOnHand = 12,
-                SafetyStock = 7,
-                Created = DateTime.Now,
-                CreatedBy = "Alfred"
-            };
-            context.Add(fakeInventoryItemToRetrieve);
-            context.Add(fakeInventoryItem1);
-            context.Add(fakeInventoryItem2);
-            context.SaveChanges();
-
-            InventoryItemsRepository repo = new InventoryItemsRepository(context);
-
-            //Act
-            var fakeInventoryItem = repo.GetById(1);
-            var fakeInventoryItemReturnedString = JsonConvert.SerializeObject(fakeInventoryItem);
-            var fakeInventoryItemToRetrieveString = JsonConvert.SerializeObject(fakeInventoryItemToRetrieve);
-            var fakeInventoryItem1String = JsonConvert.SerializeObject(fakeInventoryItem1);
-            var fakeInventoryItem2String = JsonConvert.SerializeObject(fakeInventoryItem2);
-
-            //Assert
-            Assert.NotEqual(fakeInventoryItem1String, fakeInventoryItemReturnedString);
-            Assert.NotEqual(fakeInventoryItem2String, fakeInventoryItemReturnedString);
-            Assert.Equal(fakeInventoryItemReturnedString, fakeInventoryItemToRetrieveString);
-        }
-
-        [Fact]
-        public void RetrieveInventoryItemByPartNumber()
-        {
-            //Arrange
-            var options = new DbContextOptionsBuilder<DataContext>()
-                .UseInMemoryDatabase("BatmansInventoryDatabase").Options;
-            using var context = new DataContext(options);
-            InventoryItem fakeInventoryItemToRetrieve = new InventoryItem()
-            {
-                PartName = "BataTest",
-                PartNumber = "BTE-321",
-                OrderLeadTime = 6,
-                QuantityOnHand = 5,
-                SafetyStock = 10,
-                Created = DateTime.Now,
-                CreatedBy = "Alfred"
-            };
-            InventoryItem fakeInventoryItem1 = new InventoryItem()
-            {
-                PartName = "BataTest1",
-                PartNumber = "BTE-123",
-                OrderLeadTime = 4,
-                QuantityOnHand = 2,
-                SafetyStock = 5,
-                Created = DateTime.Now,
-                CreatedBy = "Alfred"
-            };
-            InventoryItem fakeInventoryItem2 = new InventoryItem()
-            {
-                PartName = "Safe",
-                PartNumber = "SAF-321",
-                OrderLeadTime = 6,
-                QuantityOnHand = 12,
-                SafetyStock = 7,
-                Created = DateTime.Now,
-                CreatedBy = "Alfred"
-            };
-            context.Add(fakeInventoryItem1);
-            context.Add(fakeInventoryItem2);
-            context.Add(fakeInventoryItemToRetrieve);
-            context.SaveChanges();
-
-            InventoryItemsRepository repo = new InventoryItemsRepository(context);
-
-            //Act
-            var fakeInventoryItem = repo.GetByPartNumber(fakeInventoryItemToRetrieve.PartNumber);
-            var fakeInventoryItemReturnedString = JsonConvert.SerializeObject(fakeInventoryItem);
-            var fakeInventoryItemToRetrieveString = JsonConvert.SerializeObject(fakeInventoryItemToRetrieve);
-            var fakeInventoryItem1String = JsonConvert.SerializeObject(fakeInventoryItem1);
-            var fakeInventoryItem2String = JsonConvert.SerializeObject(fakeInventoryItem2);
-
-            //Assert
-            Assert.NotEqual(fakeInventoryItem1String, fakeInventoryItemReturnedString);
-            Assert.NotEqual(fakeInventoryItem2String, fakeInventoryItemReturnedString);
-            Assert.Equal(fakeInventoryItemReturnedString, fakeInventoryItemToRetrieveString);
         }
     }
 }

@@ -16,19 +16,16 @@ namespace BatmansInventory.Tests
         //private Mock<IInventoryItemsRepository> _mockRepo;
         //private IInventoryItemsService sut;
 
-        //public InventoryItemsShould()
-        //{
+        private List<InventoryItem> _fakeInventoryItemsList;
 
-        //}
-
-        private DataContext GetPopulatedInMemoryDbContext()
+        public InventoryItemsShould()
         {
-            // Naming in-memory db by GUID so every test ran is a new db so it's not affected by previous runs
-            var options = new DbContextOptionsBuilder<DataContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .Options;
-            var context = new DataContext(options);
+            _fakeInventoryItemsList = new List<InventoryItem>();
+            //Fill in w / _mockRepo & sut
+        }
 
+        private void PopulateFakeInventoryItemsList()
+        {
             InventoryItem fakeInventoryItem = new InventoryItem()
             {
                 InventoryItemId = 1,
@@ -85,6 +82,77 @@ namespace BatmansInventory.Tests
                 CreatedBy = "Alfred"
             };
 
+            _fakeInventoryItemsList.Add(fakeInventoryItem);
+            _fakeInventoryItemsList.Add(fakeInventoryItemToRetrieve);
+            _fakeInventoryItemsList.Add(fakeInventoryItemUnderSafetyStock1);
+            _fakeInventoryItemsList.Add(fakeInventoryItemUnderSafetyStock2);
+            _fakeInventoryItemsList.Add(fakeInventoryItemNotUnderSafetyStock);
+        }
+
+        private DataContext GetPopulatedInMemoryDbContext()
+        {
+            // Naming in-memory db by GUID so every test ran is a new db so it's not affected by previous runs
+            var options = new DbContextOptionsBuilder<DataContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+            var context = new DataContext(options);
+
+            InventoryItem fakeInventoryItem = new InventoryItem()
+            {
+                InventoryItemId = 1,
+                PartName = "Bat Test",
+                PartNumber = "BTE-747",
+                OrderLeadTime = 6,
+                QuantityOnHand = 4,
+                SafetyStock = 5,
+                Created = DateTime.Now,
+                CreatedBy = "Tester",
+            };
+            InventoryItem fakeInventoryItemToRetrieve = new InventoryItem()
+            {
+                InventoryItemId = 2,
+                PartName = "BataTest",
+                PartNumber = "BTE-321",
+                OrderLeadTime = 6,
+                QuantityOnHand = 5,
+                SafetyStock = 10,
+                Created = DateTime.Now,
+                CreatedBy = "Alfred"
+            };
+            InventoryItem fakeInventoryItemUnderSafetyStock1 = new InventoryItem()
+            {
+                InventoryItemId = 3,
+                PartName = "BataTest",
+                PartNumber = "BTE-321",
+                OrderLeadTime = 6,
+                QuantityOnHand = 5,
+                SafetyStock = 10,
+                Created = DateTime.Now,
+                CreatedBy = "Alfred"
+            };
+            InventoryItem fakeInventoryItemUnderSafetyStock2 = new InventoryItem()
+            {
+                InventoryItemId = 4,
+                PartName = "BataTest1",
+                PartNumber = "BTE-123",
+                OrderLeadTime = 4,
+                QuantityOnHand = 2,
+                SafetyStock = 5,
+                Created = DateTime.Now,
+                CreatedBy = "Alfred"
+            };
+            InventoryItem fakeInventoryItemNotUnderSafetyStock = new InventoryItem()
+            {
+                InventoryItemId = 5,
+                PartName = "Not Safe",
+                PartNumber = "SAF-321",
+                OrderLeadTime = 6,
+                QuantityOnHand = 12,
+                SafetyStock = 7,
+                Created = DateTime.Now,
+                CreatedBy = "Alfred"
+            };
+
             context.Add(fakeInventoryItem);
             context.Add(fakeInventoryItemToRetrieve);
             context.Add(fakeInventoryItemUnderSafetyStock1);
@@ -95,38 +163,38 @@ namespace BatmansInventory.Tests
             return context;
         }
 
-        //[Fact]
-        //public void CreateNewInventoryItemIntoTheDatabase()
-        //{
-        //    //Arrange
-        //    var context = GetPopulatedInMemoryDbContext();
+        [Fact]
+        public void CreateNewInventoryItemIntoTheDatabase()
+        {
+            //Arrange
+            //var context = GetPopulatedInMemoryDbContext();
+            PopulateFakeInventoryItemsList();
+            var fakeList = _fakeInventoryItemsList;
 
-        //    // Need to get a proper list...
-        //    var fakeInventoryItemsList = context.InventoryItems.ToListAsync();
+            InventoryItem fakeInventoryItemToCreate = new InventoryItem()
+            {
+                InventoryItemId = 6,
+                PartName = "Shiny",
+                PartNumber = "SHI-747",
+                OrderLeadTime = 6,
+                QuantityOnHand = 4,
+                SafetyStock = 5,
+                Created = DateTime.Now,
+                CreatedBy = "Tester",
+            };
 
-        //    InventoryItem fakeInventoryItem = new InventoryItem()
-        //    {
-        //        InventoryItemId = 1,
-        //        PartName = "Bat Test",
-        //        PartNumber = "BTE-747",
-        //        OrderLeadTime = 6,
-        //        QuantityOnHand = 4,
-        //        SafetyStock = 5,
-        //        Created = DateTime.Now,
-        //        CreatedBy = "Tester",
-        //    };
+            Mock<IInventoryItemsRepository> mockRepo = new Mock<IInventoryItemsRepository>();
+            mockRepo.Setup(m => m.CreateInventoryItem(It.IsAny<InventoryItem>())).Returns(fakeInventoryItemToCreate);
+            mockRepo.Setup(m => m.GetAll()).Returns(() => fakeList);
 
-        //    Mock<IInventoryItemsRepository> mockRepo = new Mock<IInventoryItemsRepository>(context);
-        //    mockRepo.Setup(m => m.CreateInventoryItem(It.IsAny<InventoryItem>())).Returns(fakeInventoryItem);
+            InventoryItemsService sut = new InventoryItemsService(mockRepo.Object);
 
-        //    InventoryItemsService sut = new InventoryItemsService(mockRepo.Object);
+            //Act
+            var newFakeInventoryItem = sut.CreateInventoryItem(fakeInventoryItemToCreate);
 
-        //    //Act
-        //    var newFakeInventoryItem = sut.CreateInventoryItem(fakeInventoryItem);
-
-        //    //Assert
-        //    Assert.Contains(newFakeInventoryItem, fakeInventoryItemsList);
-        //}
+            //Assert
+            Assert.Contains(newFakeInventoryItem, fakeList);
+        }
 
         [Fact]
         public void ReturnInventoryItemByItsId()

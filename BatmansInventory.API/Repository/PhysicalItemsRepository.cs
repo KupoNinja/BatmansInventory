@@ -78,13 +78,14 @@ namespace BatmansInventory.API.Services
 
         public PhysicalItem UpdatePhysicalItem(PhysicalItem pItemData)
         {
+            if (!IsInventoryItemIdValid(pItemData.InventoryItemId)) { throw new Exception("We can't find that Inventory Item! Please try a different ID"); }
+            
             var pItemToUpdate = GetById(pItemData.PhysicalItemId);
-            //Should have separate function to change ItemId for checks
             pItemToUpdate.InventoryItemId = pItemData.InventoryItemId;
+            //Need validation for SerialNumber
             pItemToUpdate.SerialNumber = pItemData.SerialNumber;
             pItemToUpdate.LocationId = pItemData.LocationId;
             pItemToUpdate.Value = pItemData.Value;
-            //How to handle if needing to change SerialNumber?
             pItemToUpdate.LastUpdated = DateTime.Now;
             pItemToUpdate.LastUpdatedBy = pItemData.LastUpdatedBy;
 
@@ -100,6 +101,14 @@ namespace BatmansInventory.API.Services
 
             _db.PhysicalItems.Remove(pItemToDelete);
             _db.SaveChanges();
+
+            return true;
+        }
+
+        private bool IsInventoryItemIdValid(int inventoryItemId)
+        {
+            if (!_db.InventoryItems.Any(i => i.InventoryItemId == inventoryItemId))
+                return false;
 
             return true;
         }

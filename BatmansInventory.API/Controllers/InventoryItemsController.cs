@@ -33,20 +33,7 @@ namespace DatingApp.API.Controllers
             }
         }
 
-        [HttpGet("{partNumber}")]
-        public ActionResult<InventoryItem> GetByPartNumber(string partNumber)
-        {
-            try
-            {
-                return Ok(_iis.GetByPartNumber(partNumber));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
-        [HttpGet("{id:int}")]
+        [HttpGet("{id}")]
         public ActionResult<InventoryItem> GetById(int id)
         {
             try
@@ -59,28 +46,14 @@ namespace DatingApp.API.Controllers
             }
         }
 
-        [HttpGet("[action]")]
-        public ActionResult<IEnumerable<InventoryItem>> GetAllUnderSafetyStock()
-        {
-            try
-            {
-                return Ok(_iis.GetAllUnderSafetyStock());
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
         [HttpPost]
         public ActionResult<InventoryItem> CreateInventoryItem([FromBody] InventoryItem inventoryItemData)
         {
             try
             {
-                //Set Item VM or DTO for Create
+                //Set Item DTO for Create
                 InventoryItem newInventoryItem = _iis.CreateInventoryItem(inventoryItemData);
 
-                //Unable to test Url
                 return Created("api/inventoryitems/" + newInventoryItem.PartNumber, newInventoryItem);
             }
             catch (Exception e)
@@ -90,7 +63,7 @@ namespace DatingApp.API.Controllers
             }
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut("{id}")]
         public ActionResult<InventoryItem> UpdateInventoryItem(int id, [FromBody] InventoryItem inventoryItemData)
         {
             try

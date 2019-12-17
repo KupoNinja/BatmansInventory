@@ -16,6 +16,7 @@ namespace BatmansInventory.Tests
         //private Mock<IInventoryItemsRepository> _mockRepo;
         //private IInventoryItemsService sut;
 
+        const int fakeInventoryItemId = 1;
         private List<InventoryItem> _fakeInventoryItemsList;
 
         public InventoryItemsShould()
@@ -28,7 +29,7 @@ namespace BatmansInventory.Tests
         {
             InventoryItem fakeInventoryItem = new InventoryItem()
             {
-                InventoryItemId = 1,
+                InventoryItemId = fakeInventoryItemId,
                 PartName = "Bat Test",
                 PartNumber = "BTE-747",
                 OrderLeadTime = 6,
@@ -200,7 +201,8 @@ namespace BatmansInventory.Tests
         public void ReturnInventoryItemByItsId()
         {
             //Arrange
-            var context = GetPopulatedInMemoryDbContext();
+            //var context = GetPopulatedInMemoryDbContext();
+            bool hasGetByIdBeenCalled = false;
 
             InventoryItem fakeInventoryItemToRetrieve = new InventoryItem()
             {
@@ -215,15 +217,16 @@ namespace BatmansInventory.Tests
             };
 
             Mock<IInventoryItemsRepository> mockRepo = new Mock<IInventoryItemsRepository>();
-            mockRepo.Setup(m => m.GetById(It.IsAny<int>())).Returns(fakeInventoryItemToRetrieve);
+            mockRepo.Setup(m => m.GetById(It.IsAny<int>())).Callback<int>(i => { hasGetByIdBeenCalled = true; }).Returns(fakeInventoryItemToRetrieve);
 
             InventoryItemsService sut = new InventoryItemsService(mockRepo.Object);
 
             //Act
-            var fakeInventoryItemToRetrieve2 = sut.GetById(2);
+            var fakeInventoryItemReturned = sut.GetById(fakeInventoryItemToRetrieve.InventoryItemId);
 
             //Assert
-            Assert.Equal(2, fakeInventoryItemToRetrieve2.InventoryItemId);
+            Assert.True(hasGetByIdBeenCalled);
+            Assert.Equal(fakeInventoryItemToRetrieve.InventoryItemId, fakeInventoryItemReturned.InventoryItemId);
         }
 
         [Fact]
@@ -266,7 +269,6 @@ namespace BatmansInventory.Tests
             var context = GetPopulatedInMemoryDbContext();
 
             InventoryItemsRepository sut = new InventoryItemsRepository(context);
-
 
             //Act
             var fakeListInventoryItemsUnderSafetyStock = sut.GetAllUnderSafetyStock();

@@ -33,45 +33,6 @@ namespace DatingApp.API.Controllers
             }
         }
 
-        [HttpGet("{locationId}/location")]
-        public ActionResult<IEnumerable<PhysicalItem>> GetByLocation(int locationId)
-        {
-            try
-            {
-                return Ok(_pir.GetByLocation(locationId));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
-        [HttpGet("{itemId}/value")]
-        public ActionResult<decimal> GetTotalValueByItem(int inventoryItemId)
-        {
-            try
-            {
-                return Ok(_pir.GetTotalValueByInventoryItem(inventoryItemId));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
-        [HttpGet("{serialNumber}")]
-        public ActionResult<InventoryItem> GetBySerialNumber(string serialNumber)
-        {
-            try
-            {
-                return Ok(_pir.GetBySerialNumber(serialNumber));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
         [HttpPost]
         public ActionResult<PhysicalItem> CreatePhysicalItem([FromBody] PhysicalItem pItemData)
         {

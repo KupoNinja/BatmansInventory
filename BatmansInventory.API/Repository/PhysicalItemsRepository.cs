@@ -27,10 +27,10 @@ namespace BatmansInventory.API.Services
 
         public PhysicalItem GetById(int id)
         {
-            var pitem = _db.PhysicalItems.FirstOrDefault(i => i.PhysicalItemId == id);
-            if (pitem == null) { throw new Exception("That item doesn't exist. Looks like Alfred needs to order more!"); }
+            var pItem = _db.PhysicalItems.FirstOrDefault(i => i.PhysicalItemId == id);
+            if (pItem == null) { throw new Exception("That item doesn't exist. Looks like Alfred needs to order more!"); }
 
-            return pitem;
+            return pItem;
         }
 
         public List<PhysicalItem> GetByLocation(int locationId)
@@ -103,7 +103,6 @@ namespace BatmansInventory.API.Services
             _db.PhysicalItems.Remove(pItemToDelete);
             _db.SaveChanges();
 
-            //Don't like this... Tired...
             return true;
         }
     }

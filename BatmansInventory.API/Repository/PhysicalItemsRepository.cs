@@ -49,7 +49,6 @@ namespace BatmansInventory.API.Services
             return pitem;
         }
 
-        //Should be in class?
         public decimal GetTotalValueByInventoryItem(int inventoryItemId)
         {
             var pItemsCount = _db.PhysicalItems.Where(p => p.InventoryItemId == inventoryItemId).ToList();
@@ -59,12 +58,12 @@ namespace BatmansInventory.API.Services
 
         public PhysicalItem CreatePhysicalItem(PhysicalItem pItemData)
         {
-            //Set PhysicalItem VM or DTO for Create
+            //Set PhysicalItem DTO for Create
             var newPItem = new PhysicalItem();
             //Should bring back Item object
             newPItem.InventoryItemId = pItemData.InventoryItemId;
             newPItem.SerialNumber = pItemData.SerialNumber;
-            //Should bring back location object
+            //Should bring back Location object
             newPItem.LocationId = pItemData.LocationId;
             newPItem.Value = pItemData.Value;
             newPItem.Created = DateTime.Now;
@@ -89,7 +88,6 @@ namespace BatmansInventory.API.Services
             pItemToUpdate.LastUpdated = DateTime.Now;
             pItemToUpdate.LastUpdatedBy = pItemData.LastUpdatedBy;
 
-            //Added for disconnected state
             _db.PhysicalItems.Update(pItemToUpdate);
             _db.SaveChanges();
 

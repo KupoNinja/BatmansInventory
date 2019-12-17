@@ -33,6 +33,32 @@ namespace DatingApp.API.Controllers
             }
         }
 
+        [HttpGet("{id}")]
+        public ActionResult<PhysicalItem> GetById(int id)
+        {
+            try
+            {
+                return Ok(_pir.GetById(id));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("[action]/{serialNumber}")]
+        public ActionResult<PhysicalItem> GetBySerialNumber(string serialNumber)
+        {
+            try
+            {
+                return Ok(_pir.GetBySerialNumber(serialNumber));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpPost]
         public ActionResult<PhysicalItem> CreatePhysicalItem([FromBody] PhysicalItem pItemData)
         {
@@ -40,7 +66,6 @@ namespace DatingApp.API.Controllers
             {
                 PhysicalItem newItem = _pir.CreatePhysicalItem(pItemData);
 
-                //Unable to test Url
                 return Created("api/physicalitems/" + newItem.SerialNumber, newItem);
             }
             catch (Exception e)

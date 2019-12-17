@@ -48,19 +48,6 @@ namespace BatmansInventory.API.Controllers
             }
         }
 
-        [HttpGet("[action]/{serialNumber}")]
-        public ActionResult<PhysicalItem> GetBySerialNumber(string serialNumber)
-        {
-            try
-            {
-                return Ok(_pir.GetBySerialNumber(serialNumber));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
         [HttpGet("[action]/{locationId}")]
         public ActionResult<IEnumerable<PhysicalItem>> GetByLocation(int locationId)
         {

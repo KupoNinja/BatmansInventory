@@ -73,6 +73,7 @@ namespace BatmansInventory.API.Services
 
             inventoryItemToUpdate.PartName = inventoryItem.PartName;
             //How to handle if needing to change PartNumber?
+            inventoryItemToUpdate.PartNumber = inventoryItem.PartNumber;
             inventoryItemToUpdate.OrderLeadTime = inventoryItem.OrderLeadTime;
             inventoryItemToUpdate.QuantityOnHand = inventoryItem.QuantityOnHand;
             inventoryItemToUpdate.SafetyStock = inventoryItem.SafetyStock;

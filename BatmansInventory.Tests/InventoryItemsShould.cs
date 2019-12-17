@@ -168,8 +168,8 @@ namespace BatmansInventory.Tests
         public void CreateNewInventoryItemIntoTheDatabase()
         {
             //Arrange
-            //var context = GetPopulatedInMemoryDbContext();
-            PopulateFakeInventoryItemsList();
+            var context = GetPopulatedInMemoryDbContext();
+            //PopulateFakeInventoryItemsList();
             var fakeList = _fakeInventoryItemsList;
 
             InventoryItem fakeInventoryItemToCreate = new InventoryItem()
@@ -184,17 +184,19 @@ namespace BatmansInventory.Tests
                 CreatedBy = "Tester",
             };
 
-            Mock<IInventoryItemsRepository> mockRepo = new Mock<IInventoryItemsRepository>();
-            mockRepo.Setup(m => m.CreateInventoryItem(It.IsAny<InventoryItem>())).Returns(fakeInventoryItemToCreate);
-            mockRepo.Setup(m => m.GetAll()).Returns(() => fakeList);
+            //Mock<IInventoryItemsRepository> mockRepo = new Mock<IInventoryItemsRepository>();
+            //mockRepo.Setup(m => m.CreateInventoryItem(It.IsAny<InventoryItem>())).Returns(fakeInventoryItemToCreate);
+            //mockRepo.Setup(m => m.GetAll()).Returns(() => fakeList);
 
-            InventoryItemsService sut = new InventoryItemsService(mockRepo.Object);
+            //InventoryItemsService sut = new InventoryItemsService(mockRepo.Object);
+            IInventoryItemsRepository sut = new InventoryItemsRepository(context);
 
             //Act
             var newFakeInventoryItem = sut.CreateInventoryItem(fakeInventoryItemToCreate);
+            var fakeListOfInventoryItems = sut.GetAll();
 
             //Assert
-            Assert.Contains(newFakeInventoryItem, fakeList);
+            Assert.Contains(newFakeInventoryItem, fakeListOfInventoryItems);
         }
 
         [Fact]

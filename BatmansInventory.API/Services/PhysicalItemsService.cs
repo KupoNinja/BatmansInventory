@@ -87,6 +87,7 @@ namespace BatmansInventory.API.Services
             //Need validation for SerialNumber
             pItemToUpdate.SerialNumber = pItemData.SerialNumber;
             pItemToUpdate.LocationId = pItemData.LocationId;
+            pItemToUpdate.Location = returnedLocation;
             pItemToUpdate.Value = pItemData.Value;
             pItemToUpdate.LastUpdated = DateTime.Now;
             pItemToUpdate.LastUpdatedBy = pItemData.LastUpdatedBy;
@@ -100,11 +101,12 @@ namespace BatmansInventory.API.Services
         {
             var pItemToDelete = GetById(id);
 
-            var isDeleted =_pir.DeletePhysicalItem(id);
+            var isDeleted =_pir.DeletePhysicalItem(pItemToDelete.PhysicalItemId);
 
             return isDeleted;
         }
 
+        //Test these validations
         private InventoryItem ReturnInventoryItem(int inventoryItemId)
         {
             var inventoryItemToReturn = _iis.GetById(inventoryItemId);

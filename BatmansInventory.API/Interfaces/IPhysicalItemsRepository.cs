@@ -16,5 +16,6 @@ namespace BatmansInventory.API.Interfaces
         PhysicalItem CreatePhysicalItem(PhysicalItem pItemData);
         PhysicalItem UpdatePhysicalItem(PhysicalItem pItemData);
         bool DeletePhysicalItem(int id);
+        Location GetLocation(int locationId);
     }
 }

@@ -114,12 +114,11 @@ namespace BatmansInventory.API.Services
             return true;
         }
 
-        //private InventoryItem ReturnInventoryItem (PhysicalItem pItem)
-        //{
-        //    var inventoryItemToReturn = _db.InventoryItems.FirstOrDefault(i => i.InventoryItemId == pItem.InventoryItemId);
-        //    if (inventoryItemToReturn == null) { throw new Exception("We can't find that Inventory Item! Please try a different Inventory Item."); }
+        public Location GetLocation(int locationId)
+        {
+            var locationToReturn = _db.Locations.FirstOrDefault(l => l.LocationId == locationId);
 
-        //    return inventoryItemToReturn;
-        //}
+            return locationToReturn;
+        }
     }
 }

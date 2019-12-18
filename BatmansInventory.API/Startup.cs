@@ -35,8 +35,9 @@ namespace BatmansInventory.API
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddTransient<IInventoryItemsService, InventoryItemsService>();
-            services.AddScoped<IInventoryItemsRepository, InventoryItemsRepository>();
+            services.AddTransient<IInventoryItemsRepository, InventoryItemsRepository>();
 
+            services.AddTransient<IPhysicalItemsService, PhysicalItemsService>();
             services.AddTransient<IPhysicalItemsRepository, PhysicalItemsRepository>();
         }
 

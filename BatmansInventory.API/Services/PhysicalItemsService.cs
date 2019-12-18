@@ -59,20 +59,21 @@ namespace BatmansInventory.API.Services
 
         public PhysicalItem CreatePhysicalItem(PhysicalItem pItemData)
         {
+            var returnedInventoryItem = ReturnInventoryItem(pItemData.InventoryItemId);
+            var returnedLocation = ReturnLocation(pItemData.LocationId);
+
             //Set PhysicalItem DTO for Create
             var newPItem = new PhysicalItem();
             newPItem.InventoryItemId = pItemData.InventoryItemId;
             newPItem.SerialNumber = pItemData.SerialNumber;
             newPItem.LocationId = pItemData.LocationId;
             newPItem.Value = pItemData.Value;
+            //See why time is wrong
             newPItem.Created = DateTime.Now;
             //Get UserId to auto Createdby
             newPItem.CreatedBy = pItemData.CreatedBy;
 
             var createdPItem = _pir.CreatePhysicalItem(pItemData);
-
-            var returnedInventoryItem = ReturnInventoryItem(pItemData.InventoryItemId);
-            var returnedLocation = ReturnLocation(pItemData.LocationId);
 
             createdPItem.Item = returnedInventoryItem;
             createdPItem.Location = returnedLocation;

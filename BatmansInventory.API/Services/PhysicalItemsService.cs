@@ -23,6 +23,15 @@ namespace BatmansInventory.API.Services
             var pItems = _pir.GetAll();
             if (pItems == null || pItems.Count == 0) { throw new Exception("Physical Item Inventory is empty. Looks like a jokester wiped out his database. HaHAhA..."); }
 
+            foreach (var pItem in pItems)
+            {
+                var returnedInventoryItem = FindInventoryItem(pItem.InventoryItemId);
+                var returnedLocation = FindLocation(pItem.LocationId);
+
+                pItem.Item = returnedInventoryItem;
+                pItem.Location = returnedLocation;
+            }
+
             return pItems;
         }
 

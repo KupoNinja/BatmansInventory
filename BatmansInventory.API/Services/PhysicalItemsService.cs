@@ -44,10 +44,10 @@ namespace BatmansInventory.API.Services
 
         public PhysicalItem GetBySerialNumber(string serialNumber)
         {
-            var pitem = _pir.GetBySerialNumber(serialNumber);
-            if (pitem == null) { throw new Exception("Can't find anything with that serial number. Did the Riddler switch out your keyboard?"); }
+            var pItem = _pir.GetBySerialNumber(serialNumber);
+            if (pItem == null) { throw new Exception("Can't find anything with that serial number. Did the Riddler switch out your keyboard?"); }
 
-            return pitem;
+            return pItem;
         }
 
         public decimal GetTotalValueByInventoryItem(int inventoryItemId)
@@ -61,10 +61,8 @@ namespace BatmansInventory.API.Services
         {
             //Set PhysicalItem DTO for Create
             var newPItem = new PhysicalItem();
-            //Should bring back Item object
             newPItem.InventoryItemId = pItemData.InventoryItemId;
             newPItem.SerialNumber = pItemData.SerialNumber;
-            //Should bring back Location object
             newPItem.LocationId = pItemData.LocationId;
             newPItem.Value = pItemData.Value;
             newPItem.Created = DateTime.Now;
@@ -72,6 +70,12 @@ namespace BatmansInventory.API.Services
             newPItem.CreatedBy = pItemData.CreatedBy;
 
             var createdPItem = _pir.CreatePhysicalItem(pItemData);
+
+            var returnedInventoryItem = ReturnInventoryItem(pItemData.InventoryItemId);
+            var returnedLocation = ReturnLocation(pItemData.LocationId);
+
+            createdPItem.Item = returnedInventoryItem;
+            createdPItem.Location = returnedLocation;
 
             return createdPItem;
         }
@@ -101,7 +105,7 @@ namespace BatmansInventory.API.Services
         {
             var pItemToDelete = GetById(id);
 
-            var isDeleted =_pir.DeletePhysicalItem(pItemToDelete.PhysicalItemId);
+            var isDeleted =_pir.DeletePhysicalItem(pItemToDelete);
 
             return isDeleted;
         }

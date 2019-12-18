@@ -13,11 +13,11 @@ namespace DatingApp.API.Controllers
     [ApiController]
     public class PhysicalItemsController : ControllerBase
     {
-        private readonly IPhysicalItemsRepository _pir;
+        private readonly IPhysicalItemsService _pis;
 
-        public PhysicalItemsController(IPhysicalItemsRepository pir)
+        public PhysicalItemsController(IPhysicalItemsService pis)
         {
-            _pir = pir;
+            _pis = pis;
         }
 
         [HttpGet]
@@ -25,7 +25,7 @@ namespace DatingApp.API.Controllers
         {
             try
             {
-                return Ok(_pir.GetAll());
+                return Ok(_pis.GetAll());
             }
             catch (Exception e)
             {
@@ -38,7 +38,7 @@ namespace DatingApp.API.Controllers
         {
             try
             {
-                return Ok(_pir.GetById(id));
+                return Ok(_pis.GetById(id));
             }
             catch (Exception e)
             {
@@ -51,7 +51,7 @@ namespace DatingApp.API.Controllers
         {
             try
             {
-                return Ok(_pir.GetBySerialNumber(serialNumber));
+                return Ok(_pis.GetBySerialNumber(serialNumber));
             }
             catch (Exception e)
             {
@@ -64,7 +64,7 @@ namespace DatingApp.API.Controllers
         {
             try
             {
-                PhysicalItem newItem = _pir.CreatePhysicalItem(pItemData);
+                PhysicalItem newItem = _pis.CreatePhysicalItem(pItemData);
 
                 return Created("api/physicalitems/" + newItem.SerialNumber, newItem);
             }
@@ -82,7 +82,7 @@ namespace DatingApp.API.Controllers
             {
                 pItemData.PhysicalItemId = id;
 
-                return Ok(_pir.UpdatePhysicalItem(pItemData));
+                return Ok(_pis.UpdatePhysicalItem(pItemData));
             }
             catch (Exception e)
             {
@@ -95,7 +95,7 @@ namespace DatingApp.API.Controllers
         {
             try
             {
-                return Ok(_pir.DeletePhysicalItem(id));
+                return Ok(_pis.DeletePhysicalItem(id));
             }
             catch (Exception e)
             {

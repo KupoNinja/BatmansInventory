@@ -20,7 +20,6 @@ namespace BatmansInventory.API.Services
         public List<PhysicalItem> GetAll()
         {
             var pItems = _db.PhysicalItems.ToList();
-            if (pItems == null || pItems.Count == 0) { throw new Exception("Physical Item Inventory is empty. Looks like a jokester wiped out his database. HaHAhA..."); }
 
             return pItems;
         }
@@ -28,7 +27,6 @@ namespace BatmansInventory.API.Services
         public PhysicalItem GetById(int id)
         {
             var pItem = _db.PhysicalItems.FirstOrDefault(i => i.PhysicalItemId == id);
-            if (pItem == null) { throw new Exception("That item doesn't exist. Looks like Alfred needs to order more!"); }
 
             return pItem;
         }
@@ -36,17 +34,15 @@ namespace BatmansInventory.API.Services
         public List<PhysicalItem> GetByLocation(int locationId)
         {
             var pItems = _db.PhysicalItems.Where(p => p.LocationId == locationId).ToList();
-            if (pItems == null || pItems.Count == 0) { throw new Exception("No items at this location. Let's hope kids didn't find your stash."); }
 
             return pItems;
         }
 
         public PhysicalItem GetBySerialNumber(string serialNumber)
         {
-            var pitem = _db.PhysicalItems.FirstOrDefault(p => p.SerialNumber == serialNumber);
-            if (pitem == null) { throw new Exception("Can't find anything with that serial number. Did the Riddler switch out your keyboard?"); }
+            var pItem = _db.PhysicalItems.FirstOrDefault(p => p.SerialNumber == serialNumber);
 
-            return pitem;
+            return pItem;
         }
 
         public decimal GetTotalValueByInventoryItem(int inventoryItemId)
@@ -56,60 +52,26 @@ namespace BatmansInventory.API.Services
             return pItemsCount.Sum(p => p.Value);
         }
 
-        public PhysicalItem CreatePhysicalItem(PhysicalItem pItemData)
+        public PhysicalItem CreatePhysicalItem(PhysicalItem pItemToCreate)
         {
-            //Set PhysicalItem DTO for Create
-            var newPItem = new PhysicalItem();
-            //Should bring back Item object
-            newPItem.InventoryItemId = pItemData.InventoryItemId;
-            newPItem.SerialNumber = pItemData.SerialNumber;
-            //Should bring back Location object
-            newPItem.LocationId = pItemData.LocationId;
-            newPItem.Value = pItemData.Value;
-            newPItem.Created = DateTime.Now;
-            //Get UserId to auto Createdby
-            newPItem.CreatedBy = pItemData.CreatedBy;
-
-            _db.PhysicalItems.Add(newPItem);
+            _db.PhysicalItems.Add(pItemToCreate);
             _db.SaveChanges();
 
-            return newPItem;
+            return pItemToCreate;
         }
 
-        public PhysicalItem UpdatePhysicalItem(PhysicalItem pItemData)
+        public PhysicalItem UpdatePhysicalItem(PhysicalItem pItemToUpdate)
         {
-            if (!IsInventoryItemIdValid(pItemData.InventoryItemId)) { throw new Exception("We can't find that Inventory Item! Please try a different Inventory Item."); }
-            //Return InventoryItem
-
-            var pItemToUpdate = GetById(pItemData.PhysicalItemId);
-            pItemToUpdate.InventoryItemId = pItemData.InventoryItemId;
-            //Need validation for SerialNumber
-            pItemToUpdate.SerialNumber = pItemData.SerialNumber;
-            pItemToUpdate.LocationId = pItemData.LocationId;
-            pItemToUpdate.Value = pItemData.Value;
-            pItemToUpdate.LastUpdated = DateTime.Now;
-            pItemToUpdate.LastUpdatedBy = pItemData.LastUpdatedBy;
-
             _db.PhysicalItems.Update(pItemToUpdate);
             _db.SaveChanges();
 
             return pItemToUpdate;
         }
 
-        public bool DeletePhysicalItem(int id)
+        public bool DeletePhysicalItem(PhysicalItem pItemToDelete)
         {
-            var pItemToDelete = GetById(id);
-
             _db.PhysicalItems.Remove(pItemToDelete);
             _db.SaveChanges();
-
-            return true;
-        }
-
-        private bool IsInventoryItemIdValid(int inventoryItemId)
-        {
-            if (!_db.InventoryItems.Any(i => i.InventoryItemId == inventoryItemId))
-                return false;
 
             return true;
         }

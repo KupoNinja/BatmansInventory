@@ -13,9 +13,9 @@ namespace BatmansInventory.API.Interfaces
         List<PhysicalItem> GetByLocation(int locationId);
         PhysicalItem GetBySerialNumber(string serialNumber);
         decimal GetTotalValueByInventoryItem(int inventoryItemId);
-        PhysicalItem CreatePhysicalItem(PhysicalItem pItemData);
-        PhysicalItem UpdatePhysicalItem(PhysicalItem pItemData);
-        bool DeletePhysicalItem(int id);
+        PhysicalItem CreatePhysicalItem(PhysicalItem pItemToCreate);
+        PhysicalItem UpdatePhysicalItem(PhysicalItem pItemToUpdate);
+        bool DeletePhysicalItem(PhysicalItem pItemToDelete);
         Location GetLocation(int locationId);
     }
 }

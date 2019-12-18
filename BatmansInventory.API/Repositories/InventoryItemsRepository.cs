@@ -55,7 +55,6 @@ namespace BatmansInventory.API.Services
 
         public InventoryItem UpdateInventoryItem(InventoryItem inventoryItemToUpdate)
         {
-            //Added for disconnected state
             _db.InventoryItems.Update(inventoryItemToUpdate);
             _db.SaveChanges();
 
@@ -67,7 +66,6 @@ namespace BatmansInventory.API.Services
             _db.InventoryItems.Remove(inventoryItemToDelete);
             _db.SaveChanges();
 
-            //Don't like this... Tired...
             return true;
         }
     }

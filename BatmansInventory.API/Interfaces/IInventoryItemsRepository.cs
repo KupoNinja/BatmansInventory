@@ -15,5 +15,6 @@ namespace BatmansInventory.API.Interfaces
         InventoryItem CreateInventoryItem(InventoryItem inventoryItemToCreate);
         InventoryItem UpdateInventoryItem(InventoryItem inventoryItemToUpdate);
         bool DeleteInventoryItem(InventoryItem inventoryItemToDelete);
+        bool IsPartNumberDuplicate(string partNumber);
     }
 }

@@ -68,5 +68,12 @@ namespace BatmansInventory.API.Services
 
             return true;
         }
+
+        public bool IsPartNumberDuplicate(string partNumber)
+        {
+            bool isDuplicated = _db.InventoryItems.Any(i => i.PartNumber == partNumber);
+
+            return isDuplicated;
+        }
     }
 }

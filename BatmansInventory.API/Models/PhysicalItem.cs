@@ -10,7 +10,7 @@ namespace BatmansInventory.API.Models
     {
         public int PhysicalItemId { get; set; }
         public int InventoryItemId { get; set; }
-        public InventoryItem Item { get; set; }
+        public InventoryItem InventoryItem { get; set; }
         public string SerialNumber { get; set; }
         public int LocationId { get; set; }
         public Location Location { get; set; }

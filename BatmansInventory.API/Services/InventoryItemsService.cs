@@ -49,13 +49,14 @@ namespace BatmansInventory.API.Services
 
         public InventoryItem CreateInventoryItem(InventoryItem inventoryItemData)
         {
+            if (IsPartNumberDuplicate(inventoryItemData.PartNumber)) { throw new Exception("Please try a different part number."); }
+
             var inventoryItemToCreate = new InventoryItem();
             inventoryItemToCreate.PartName = inventoryItemData.PartName;
             //Validate for PartNumber convention... What's the convention?
-            //Does not throw exception if PartNumber is not unique
+            //Does not throw error from DB if PartNumber is not unique
             inventoryItemToCreate.PartNumber = inventoryItemData.PartNumber;
             inventoryItemToCreate.OrderLeadTime = inventoryItemData.OrderLeadTime;
-            //Default QuantityOnHand to 0?
             inventoryItemToCreate.QuantityOnHand = inventoryItemData.QuantityOnHand;
             inventoryItemToCreate.SafetyStock = inventoryItemData.SafetyStock;
             inventoryItemToCreate.Created = DateTime.Now;
@@ -91,6 +92,13 @@ namespace BatmansInventory.API.Services
             var isDeleted = _iir.DeleteInventoryItem(inventoryItemToDelete);
 
             return isDeleted;
+        }
+
+        private bool IsPartNumberDuplicate(string partNumber)
+        {
+            var isDuplicated = _iir.IsPartNumberDuplicate(partNumber);
+
+            return isDuplicated;
         }
     }
 }

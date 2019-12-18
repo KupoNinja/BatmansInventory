@@ -28,7 +28,7 @@ namespace BatmansInventory.API.Services
                 var returnedInventoryItem = FindInventoryItem(pItem.InventoryItemId);
                 var returnedLocation = FindLocation(pItem.LocationId);
 
-                pItem.Item = returnedInventoryItem;
+                pItem.InventoryItem = returnedInventoryItem;
                 pItem.Location = returnedLocation;
             }
 
@@ -43,7 +43,7 @@ namespace BatmansInventory.API.Services
             var returnedInventoryItem = FindInventoryItem(pItem.InventoryItemId);
             var returnedLocation = FindLocation(pItem.LocationId);
 
-            pItem.Item = returnedInventoryItem;
+            pItem.InventoryItem = returnedInventoryItem;
             pItem.Location = returnedLocation;
 
             return pItem;
@@ -65,7 +65,7 @@ namespace BatmansInventory.API.Services
             var returnedInventoryItem = FindInventoryItem(pItem.InventoryItemId);
             var returnedLocation = FindLocation(pItem.LocationId);
 
-            pItem.Item = returnedInventoryItem;
+            pItem.InventoryItem = returnedInventoryItem;
             pItem.Location = returnedLocation;
 
             return pItem;
@@ -98,7 +98,7 @@ namespace BatmansInventory.API.Services
 
             var createdPItem = _pir.CreatePhysicalItem(pItemToCreate);
 
-            createdPItem.Item = returnedInventoryItem;
+            createdPItem.InventoryItem = returnedInventoryItem;
             createdPItem.Location = returnedLocation;
 
             return createdPItem;
@@ -111,7 +111,7 @@ namespace BatmansInventory.API.Services
 
             var pItemToUpdate = GetById(pItemData.PhysicalItemId);
             pItemToUpdate.InventoryItemId = returnedInventoryItem.InventoryItemId;
-            pItemToUpdate.Item = returnedInventoryItem;
+            pItemToUpdate.InventoryItem = returnedInventoryItem;
             //Need to define what makes a serial number
             pItemToUpdate.SerialNumber = pItemData.SerialNumber;
             pItemToUpdate.LocationId = pItemData.LocationId;

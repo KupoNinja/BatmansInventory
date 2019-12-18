@@ -54,6 +54,15 @@ namespace BatmansInventory.API.Services
             var pItems = _pir.GetByLocation(locationId);
             if (pItems == null || pItems.Count == 0) { throw new Exception("No items at this location. Let's hope kids didn't find your stash."); }
 
+            foreach (var pItem in pItems)
+            {
+                var returnedInventoryItem = FindInventoryItem(pItem.InventoryItemId);
+                var returnedLocation = FindLocation(pItem.LocationId);
+
+                pItem.InventoryItem = returnedInventoryItem;
+                pItem.Location = returnedLocation;
+            }
+
             return pItems;
         }
 

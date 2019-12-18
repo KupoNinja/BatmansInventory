@@ -28,6 +28,10 @@ namespace BatmansInventory.API.Models
             modelBuilder.Entity<InventoryItem>()
                 .HasIndex(i => i.PartNumber)
                 .IsUnique();
+
+            modelBuilder.Entity<PhysicalItem>()
+                .HasIndex(p => p.SerialNumber)
+                .IsUnique();
         }
     }
 }

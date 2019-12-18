@@ -21,7 +21,5 @@ namespace BatmansInventory.API.Models
 #nullable enable
         public DateTime? LastUpdated { get; set; }
         public string? LastUpdatedBy { get; set; }
-
-        //SafetyStock method?
     }
 }

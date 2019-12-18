@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BatmansInventory.API.Migrations
 {
-    [DbContext(typeof(DataContext))]
+    [DbContext(typeof(BatmansInventoryContext))]
     [Migration("20191201051848_ChangeItemToInventoryItem")]
     partial class ChangeItemToInventoryItem
     {

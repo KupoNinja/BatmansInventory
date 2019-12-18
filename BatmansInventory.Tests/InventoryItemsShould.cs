@@ -90,13 +90,13 @@ namespace BatmansInventory.Tests
             _fakeInventoryItemsList.Add(fakeInventoryItemNotUnderSafetyStock);
         }
 
-        private DataContext GetPopulatedInMemoryDbContext()
+        private BatmansInventoryContext GetPopulatedInMemoryDbContext()
         {
             // Naming in-memory db by GUID so every test ran is a new db so it's not affected by previous runs
-            var options = new DbContextOptionsBuilder<DataContext>()
+            var options = new DbContextOptionsBuilder<BatmansInventoryContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
-            var context = new DataContext(options);
+            var context = new BatmansInventoryContext(options);
 
             InventoryItem fakeInventoryItem = new InventoryItem()
             {

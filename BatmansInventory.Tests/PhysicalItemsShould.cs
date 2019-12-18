@@ -9,12 +9,12 @@ namespace BatmansInventory.Tests
 {
     public class PhysicalItemsShould
     {
-        private DataContext GetPopulatedInMemoryDbContext()
+        private BatmansInventoryContext GetPopulatedInMemoryDbContext()
         {
-            var options = new DbContextOptionsBuilder<DataContext>()
+            var options = new DbContextOptionsBuilder<BatmansInventoryContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
-            var context = new DataContext(options);
+            var context = new BatmansInventoryContext(options);
             PhysicalItem fakePhysicalItemSameLocation1 = new PhysicalItem()
             {
                 PhysicalItemId = 1,

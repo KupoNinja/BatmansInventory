@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BatmansInventory.API.Interfaces
 {
-    public interface IDataContext
+    public interface IBatmansInventoryContext
     {
         DbSet<InventoryItem> InventoryItems { get; set; }
         DbSet<PhysicalItem> PhysicalItems { get; set; }

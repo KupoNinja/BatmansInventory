@@ -9,9 +9,9 @@ namespace BatmansInventory.API.Services
 {
     public class InventoryItemsRepository : IInventoryItemsRepository
     {
-        private readonly DataContext _db;
+        private readonly BatmansInventoryContext _db;
 
-        public InventoryItemsRepository(DataContext db)
+        public InventoryItemsRepository(BatmansInventoryContext db)
         {
             _db = db;
         }

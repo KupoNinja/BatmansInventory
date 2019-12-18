@@ -10,9 +10,9 @@ namespace BatmansInventory.API.Services
 {
     public class PhysicalItemsRepository : IPhysicalItemsRepository
     {
-        private readonly DataContext _db;
+        private readonly BatmansInventoryContext _db;
 
-        public PhysicalItemsRepository(DataContext db)
+        public PhysicalItemsRepository(BatmansInventoryContext db)
         {
             _db = db;
         }
@@ -78,8 +78,9 @@ namespace BatmansInventory.API.Services
 
         public PhysicalItem UpdatePhysicalItem(PhysicalItem pItemData)
         {
-            if (!IsInventoryItemIdValid(pItemData.InventoryItemId)) { throw new Exception("We can't find that Inventory Item! Please try a different ID"); }
-            
+            if (!IsInventoryItemIdValid(pItemData.InventoryItemId)) { throw new Exception("We can't find that Inventory Item! Please try a different Inventory Item."); }
+            //Return InventoryItem
+
             var pItemToUpdate = GetById(pItemData.PhysicalItemId);
             pItemToUpdate.InventoryItemId = pItemData.InventoryItemId;
             //Need validation for SerialNumber
@@ -112,5 +113,13 @@ namespace BatmansInventory.API.Services
 
             return true;
         }
+
+        //private InventoryItem ReturnInventoryItem (PhysicalItem pItem)
+        //{
+        //    var inventoryItemToReturn = _db.InventoryItems.FirstOrDefault(i => i.InventoryItemId == pItem.InventoryItemId);
+        //    if (inventoryItemToReturn == null) { throw new Exception("We can't find that Inventory Item! Please try a different Inventory Item."); }
+
+        //    return inventoryItemToReturn;
+        //}
     }
 }

@@ -12,6 +12,7 @@ namespace BatmansInventory.Tests.Services
     public class PhysicalItemsServiceShould
     {
         const string duplicateSerialNumber = "B052";
+        const int validLocationId = 1;
 
         [Fact]
         public void FailPhysicalItemCreationIfSerialNumberIsDuplicate()
@@ -20,13 +21,14 @@ namespace BatmansInventory.Tests.Services
             Mock<IPhysicalItemsRepository> mockPhysicalItemRepo = new Mock<IPhysicalItemsRepository>();
             Mock<IInventoryItemsRepository> mockInventoryItemRepo = new Mock<IInventoryItemsRepository>();
             mockPhysicalItemRepo.Setup(m => m.IsSerialNumberDuplicate(duplicateSerialNumber)).Returns(true);
+            //mockPhysicalItemRepo.Setup(m => m.GetLocation(validLocationId).Returns(validLocationId)
 
             PhysicalItemsService sut = new PhysicalItemsService(mockPhysicalItemRepo.Object, mockInventoryItemRepo.Object);
             PhysicalItem physicalItemWithDuplicateSerialNumber = new PhysicalItem()
             {
                 PhysicalItemId = 1,
                 InventoryItemId = 1,
-                SerialNumber = "B052",
+                SerialNumber = "B152",
                 LocationId = 1,
                 Value = 9.99m,
                 Created = DateTime.Now,

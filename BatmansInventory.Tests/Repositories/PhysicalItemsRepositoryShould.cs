@@ -11,6 +11,8 @@ namespace BatmansInventory.Tests.Repositories
     public class PhysicalItemsRepositoryShould
     {
         const string duplicateSerialNumber = "A001";
+        const string validSerialNumber = "Z999";
+        const int validLocationId = 3;
 
         private BatmansInventoryContext GetPopulatedInMemoryDbContext()
         {
@@ -105,6 +107,21 @@ namespace BatmansInventory.Tests.Repositories
 
             //Assert
             Assert.True(isDuplicated);
+        }
+
+        [Fact]
+        public void ReturnNullIfLocationIdIsInvalid()
+        {
+            //Arrange
+            var context = GetPopulatedInMemoryDbContext();
+
+            PhysicalItemsRepository sut = new PhysicalItemsRepository(context);
+
+            //Act
+            var returnedLocation = sut.GetLocation(validLocationId);
+
+            //Assert
+            Assert.Null(returnedLocation);
         }
     }
 }

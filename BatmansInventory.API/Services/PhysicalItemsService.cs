@@ -9,16 +9,18 @@ namespace BatmansInventory.API.Services
 {
     public class PhysicalItemsService : IPhysicalItemsService
     {
-        private readonly BatmansInventoryContext _db;
+        private readonly IPhysicalItemsRepository _pir;
+        private readonly IInventoryItemsRepository _iis;
 
-        public PhysicalItemsRepository(BatmansInventoryContext db)
+        public PhysicalItemsService(IPhysicalItemsRepository pir, IInventoryItemsRepository iis)
         {
-            _db = db;
+            _pir = pir;
+            _iis = iis;
         }
 
         public List<PhysicalItem> GetAll()
         {
-            var pItems = _db.PhysicalItems.ToList();
+            var pItems = _pir.GetAll();
             if (pItems == null || pItems.Count == 0) { throw new Exception("Physical Item Inventory is empty. Looks like a jokester wiped out his database. HaHAhA..."); }
 
             return pItems;
@@ -26,7 +28,7 @@ namespace BatmansInventory.API.Services
 
         public PhysicalItem GetById(int id)
         {
-            var pItem = _db.PhysicalItems.FirstOrDefault(i => i.PhysicalItemId == id);
+            var pItem = _pir.GetById(id);
             if (pItem == null) { throw new Exception("That item doesn't exist. Looks like Alfred needs to order more!"); }
 
             return pItem;
@@ -34,7 +36,7 @@ namespace BatmansInventory.API.Services
 
         public List<PhysicalItem> GetByLocation(int locationId)
         {
-            var pItems = _db.PhysicalItems.Where(p => p.LocationId == locationId).ToList();
+            var pItems = _pir.GetByLocation(locationId);
             if (pItems == null || pItems.Count == 0) { throw new Exception("No items at this location. Let's hope kids didn't find your stash."); }
 
             return pItems;
@@ -42,7 +44,7 @@ namespace BatmansInventory.API.Services
 
         public PhysicalItem GetBySerialNumber(string serialNumber)
         {
-            var pitem = _db.PhysicalItems.FirstOrDefault(p => p.SerialNumber == serialNumber);
+            var pitem = _pir.GetBySerialNumber(serialNumber);
             if (pitem == null) { throw new Exception("Can't find anything with that serial number. Did the Riddler switch out your keyboard?"); }
 
             return pitem;
@@ -50,9 +52,9 @@ namespace BatmansInventory.API.Services
 
         public decimal GetTotalValueByInventoryItem(int inventoryItemId)
         {
-            var pItemsCount = _db.PhysicalItems.Where(p => p.InventoryItemId == inventoryItemId).ToList();
+            var pItemsCount = _pir.GetTotalValueByInventoryItem(inventoryItemId);
 
-            return pItemsCount.Sum(p => p.Value);
+            return pItemsCount;
         }
 
         public PhysicalItem CreatePhysicalItem(PhysicalItem pItemData)
@@ -69,19 +71,19 @@ namespace BatmansInventory.API.Services
             //Get UserId to auto Createdby
             newPItem.CreatedBy = pItemData.CreatedBy;
 
-            _db.PhysicalItems.Add(newPItem);
-            _db.SaveChanges();
+            var createdPItem = _pir.CreatePhysicalItem(pItemData);
 
-            return newPItem;
+            return createdPItem;
         }
 
         public PhysicalItem UpdatePhysicalItem(PhysicalItem pItemData)
         {
-            if (!IsInventoryItemIdValid(pItemData.InventoryItemId)) { throw new Exception("We can't find that Inventory Item! Please try a different Inventory Item."); }
-            //Return InventoryItem
+            var returnedInventoryItem = ReturnInventoryItem(pItemData.InventoryItemId);
+            var returnedLocation = ReturnLocation(pItemData.LocationId);
 
             var pItemToUpdate = GetById(pItemData.PhysicalItemId);
-            pItemToUpdate.InventoryItemId = pItemData.InventoryItemId;
+            pItemToUpdate.InventoryItemId = returnedInventoryItem.InventoryItemId;
+            pItemToUpdate.Item = returnedInventoryItem;
             //Need validation for SerialNumber
             pItemToUpdate.SerialNumber = pItemData.SerialNumber;
             pItemToUpdate.LocationId = pItemData.LocationId;
@@ -89,36 +91,34 @@ namespace BatmansInventory.API.Services
             pItemToUpdate.LastUpdated = DateTime.Now;
             pItemToUpdate.LastUpdatedBy = pItemData.LastUpdatedBy;
 
-            _db.PhysicalItems.Update(pItemToUpdate);
-            _db.SaveChanges();
+            var updatedPItem = _pir.UpdatePhysicalItem(pItemToUpdate);
 
-            return pItemToUpdate;
+            return updatedPItem;
         }
 
         public bool DeletePhysicalItem(int id)
         {
             var pItemToDelete = GetById(id);
 
-            _db.PhysicalItems.Remove(pItemToDelete);
-            _db.SaveChanges();
+            var isDeleted =_pir.DeletePhysicalItem(id);
 
-            return true;
+            return isDeleted;
         }
 
-        private bool IsInventoryItemIdValid(int inventoryItemId)
+        private InventoryItem ReturnInventoryItem(int inventoryItemId)
         {
-            if (!_db.InventoryItems.Any(i => i.InventoryItemId == inventoryItemId))
-                return false;
+            var inventoryItemToReturn = _iis.GetById(inventoryItemId);
+            if (inventoryItemToReturn == null) { throw new Exception("We can't find that Inventory Item! Please try a different Inventory Item."); }
 
-            return true;
+            return inventoryItemToReturn;
         }
 
-        //private InventoryItem ReturnInventoryItem (PhysicalItem pItem)
-        //{
-        //    var inventoryItemToReturn = _db.InventoryItems.FirstOrDefault(i => i.InventoryItemId == pItem.InventoryItemId);
-        //    if (inventoryItemToReturn == null) { throw new Exception("We can't find that Inventory Item! Please try a different Inventory Item."); }
+        private Location ReturnLocation(int locationId)
+        {
+            var locationToReturn = _pir.GetLocation(locationId);
+            if (locationToReturn == null) { throw new Exception("We can't find that location! Please try a different location."); }
 
-        //    return inventoryItemToReturn;
-        //}
+            return locationToReturn;
+        }
     }
 }

@@ -14,25 +14,12 @@ namespace BatmansInventory.API.Controllers
     public class DashboardController : ControllerBase
     {
         private readonly IInventoryItemsService _iis;
-        private readonly IPhysicalItemsRepository _pir;
+        private readonly IPhysicalItemsService _pis;
 
-        public DashboardController(IInventoryItemsService iis, IPhysicalItemsRepository pir)
+        public DashboardController(IInventoryItemsService iis, IPhysicalItemsService pis)
         {
             _iis = iis;
-            _pir = pir;
-        }
-
-        [HttpGet("[action]/{partNumber}")]
-        public ActionResult<InventoryItem> GetByPartNumber(string partNumber)
-        {
-            try
-            {
-                return Ok(_iis.GetByPartNumber(partNumber));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            _pis = pis;
         }
 
         [HttpGet("[action]")]
@@ -53,7 +40,7 @@ namespace BatmansInventory.API.Controllers
         {
             try
             {
-                return Ok(_pir.GetByLocation(locationId));
+                return Ok(_pis.GetByLocation(locationId));
             }
             catch (Exception e)
             {
@@ -66,7 +53,7 @@ namespace BatmansInventory.API.Controllers
         {
             try
             {
-                return Ok(_pir.GetTotalValueByInventoryItem(inventoryItemId));
+                return Ok(_pis.GetTotalValueByInventoryItem(inventoryItemId));
             }
             catch (Exception e)
             {

@@ -63,15 +63,15 @@ namespace BatmansInventory.API.Services
             var returnedLocation = ReturnLocation(pItemData.LocationId);
 
             //Set PhysicalItem DTO for Create
-            var newPItem = new PhysicalItem();
-            newPItem.InventoryItemId = pItemData.InventoryItemId;
-            newPItem.SerialNumber = pItemData.SerialNumber;
-            newPItem.LocationId = pItemData.LocationId;
-            newPItem.Value = pItemData.Value;
+            var pItemToCreate = new PhysicalItem();
+            pItemToCreate.InventoryItemId = pItemData.InventoryItemId;
+            pItemToCreate.SerialNumber = pItemData.SerialNumber;
+            pItemToCreate.LocationId = pItemData.LocationId;
+            pItemToCreate.Value = pItemData.Value;
             //See why time is wrong
-            newPItem.Created = DateTime.Now;
-            //Get UserId to auto Createdby
-            newPItem.CreatedBy = pItemData.CreatedBy;
+            pItemToCreate.Created = DateTime.Now;
+            //Get UserId to auto CreatedBy
+            pItemToCreate.CreatedBy = pItemData.CreatedBy;
 
             var createdPItem = _pir.CreatePhysicalItem(pItemData);
 

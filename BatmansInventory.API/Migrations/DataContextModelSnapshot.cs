@@ -56,7 +56,8 @@ namespace BatmansInventory.API.Migrations
                     b.HasKey("InventoryItemId");
 
                     b.HasIndex("PartNumber")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[PartNumber] IS NOT NULL");
 
                     b.ToTable("InventoryItems");
                 });
@@ -125,7 +126,7 @@ namespace BatmansInventory.API.Migrations
 
             modelBuilder.Entity("BatmansInventory.API.Models.PhysicalItem", b =>
                 {
-                    b.HasOne("BatmansInventory.API.Models.InventoryItem", "InventoryItem")
+                    b.HasOne("BatmansInventory.API.Models.InventoryItem", "Item")
                         .WithMany()
                         .HasForeignKey("InventoryItemId")
                         .OnDelete(DeleteBehavior.Cascade)

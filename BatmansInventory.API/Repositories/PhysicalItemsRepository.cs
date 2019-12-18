@@ -82,5 +82,12 @@ namespace BatmansInventory.API.Services
 
             return locationToReturn;
         }
+
+        public bool IsSerialNumberDuplicate(string serialNumber)
+        {
+            bool isDuplicated = _db.PhysicalItems.Any(p => p.SerialNumber == serialNumber);
+
+            return isDuplicated;
+        }
     }
 }

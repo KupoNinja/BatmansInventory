@@ -59,8 +59,11 @@ namespace BatmansInventory.API.Services
 
         public PhysicalItem CreatePhysicalItem(PhysicalItem pItemData)
         {
-            var returnedInventoryItem = ReturnInventoryItem(pItemData.InventoryItemId);
-            var returnedLocation = ReturnLocation(pItemData.LocationId);
+            if (IsSerialNumberDuplicate) { throw new Exception("Please try a different serial number."); }
+
+            var returnedInventoryItem = FindInventoryItem(pItemData.InventoryItemId);
+            var returnedLocation = FindLocation(pItemData.LocationId);
+            
 
             //Set PhysicalItem DTO for Create
             var pItemToCreate = new PhysicalItem();
@@ -73,7 +76,7 @@ namespace BatmansInventory.API.Services
             //Get UserId to auto CreatedBy
             pItemToCreate.CreatedBy = pItemData.CreatedBy;
 
-            var createdPItem = _pir.CreatePhysicalItem(pItemData);
+            var createdPItem = _pir.CreatePhysicalItem(pItemToCreate);
 
             createdPItem.Item = returnedInventoryItem;
             createdPItem.Location = returnedLocation;
@@ -83,8 +86,9 @@ namespace BatmansInventory.API.Services
 
         public PhysicalItem UpdatePhysicalItem(PhysicalItem pItemData)
         {
-            var returnedInventoryItem = ReturnInventoryItem(pItemData.InventoryItemId);
-            var returnedLocation = ReturnLocation(pItemData.LocationId);
+            if (IsSerialNumberDuplicate(pItemData.SerialNumber)) { throw new Exception("Please try a different serial number."); }
+            var returnedInventoryItem = FindInventoryItem(pItemData.InventoryItemId);
+            var returnedLocation = FindLocation(pItemData.LocationId);
 
             var pItemToUpdate = GetById(pItemData.PhysicalItemId);
             pItemToUpdate.InventoryItemId = returnedInventoryItem.InventoryItemId;
@@ -111,8 +115,15 @@ namespace BatmansInventory.API.Services
             return isDeleted;
         }
 
+        private bool IsSerialNumberDuplicate(string serialNumber)
+        {
+            var isDuplicated = _pir.IsSerialNumberDuplicate(serialNumber);
+
+            return isDuplicated;
+        }
+
         //Test these validations
-        private InventoryItem ReturnInventoryItem(int inventoryItemId)
+        private InventoryItem FindInventoryItem(int inventoryItemId)
         {
             var inventoryItemToReturn = _iis.GetById(inventoryItemId);
             if (inventoryItemToReturn == null) { throw new Exception("We can't find that Inventory Item! Please try a different Inventory Item."); }
@@ -120,7 +131,7 @@ namespace BatmansInventory.API.Services
             return inventoryItemToReturn;
         }
 
-        private Location ReturnLocation(int locationId)
+        private Location FindLocation(int locationId)
         {
             var locationToReturn = _pir.GetLocation(locationId);
             if (locationToReturn == null) { throw new Exception("We can't find that location! Please try a different location."); }

@@ -17,5 +17,6 @@ namespace BatmansInventory.API.Interfaces
         PhysicalItem UpdatePhysicalItem(PhysicalItem pItemToUpdate);
         bool DeletePhysicalItem(PhysicalItem pItemToDelete);
         Location GetLocation(int locationId);
+        bool IsSerialNumberDuplicate(string serialNumber);
     }
 }

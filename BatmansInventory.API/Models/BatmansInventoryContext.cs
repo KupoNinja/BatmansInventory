@@ -21,13 +21,13 @@ namespace BatmansInventory.API.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<PhysicalItem>()
-                .Property(p => p.Value)
-                .HasColumnType("decimal(18,2)");
-
             modelBuilder.Entity<InventoryItem>()
                 .HasIndex(i => i.PartNumber)
                 .IsUnique();
+
+            modelBuilder.Entity<PhysicalItem>()
+                .Property(p => p.Value)
+                .HasColumnType("decimal(18,2)");
 
             modelBuilder.Entity<PhysicalItem>()
                 .HasIndex(p => p.SerialNumber)

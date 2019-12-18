@@ -56,8 +56,7 @@ namespace BatmansInventory.API.Migrations
                     b.HasKey("InventoryItemId");
 
                     b.HasIndex("PartNumber")
-                        .IsUnique()
-                        .HasFilter("[PartNumber] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("InventoryItems");
                 });

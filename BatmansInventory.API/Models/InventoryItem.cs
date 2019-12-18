@@ -12,12 +12,11 @@ namespace BatmansInventory.API.Models
         public string PartName { get; set; }
         public string PartNumber { get; set; }
         public int OrderLeadTime { get; set; }
-
-        //get = count of physical items w/ itemid
         public int QuantityOnHand { get; set; }
         public int SafetyStock { get; set; }
         public DateTime Created { get; set; }
         public string CreatedBy { get; set; }
+
 #nullable enable
         public DateTime? LastUpdated { get; set; }
         public string? LastUpdatedBy { get; set; }

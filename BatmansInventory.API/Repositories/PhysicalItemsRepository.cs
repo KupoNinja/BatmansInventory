@@ -26,7 +26,7 @@ namespace BatmansInventory.API.Services
 
         public PhysicalItem GetById(int id)
         {
-            var pItem = _db.PhysicalItems.FirstOrDefault(i => i.PhysicalItemId == id);
+            var pItem = _db.PhysicalItems.SingleOrDefault(i => i.PhysicalItemId == id);
 
             return pItem;
         }
@@ -40,7 +40,7 @@ namespace BatmansInventory.API.Services
 
         public PhysicalItem GetBySerialNumber(string serialNumber)
         {
-            var pItem = _db.PhysicalItems.FirstOrDefault(p => p.SerialNumber == serialNumber);
+            var pItem = _db.PhysicalItems.SingleOrDefault(p => p.SerialNumber == serialNumber);
 
             return pItem;
         }

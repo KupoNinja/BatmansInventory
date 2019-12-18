@@ -31,6 +31,12 @@ namespace BatmansInventory.API.Services
             var pItem = _pir.GetById(id);
             if (pItem == null) { throw new Exception("That item doesn't exist. Looks like Alfred needs to order more!"); }
 
+            var returnedInventoryItem = FindInventoryItem(pItem.InventoryItemId);
+            var returnedLocation = FindLocation(pItem.LocationId);
+
+            pItem.Item = returnedInventoryItem;
+            pItem.Location = returnedLocation;
+
             return pItem;
         }
 
@@ -47,6 +53,12 @@ namespace BatmansInventory.API.Services
             var pItem = _pir.GetBySerialNumber(serialNumber);
             if (pItem == null) { throw new Exception("Can't find anything with that serial number. Did the Riddler switch out your keyboard?"); }
 
+            var returnedInventoryItem = FindInventoryItem(pItem.InventoryItemId);
+            var returnedLocation = FindLocation(pItem.LocationId);
+
+            pItem.Item = returnedInventoryItem;
+            pItem.Location = returnedLocation;
+
             return pItem;
         }
 
@@ -58,8 +70,8 @@ namespace BatmansInventory.API.Services
         }
 
         public PhysicalItem CreatePhysicalItem(PhysicalItem pItemData)
-        {
-            if (IsSerialNumberDuplicate) { throw new Exception("Please try a different serial number."); }
+        {            
+            if (IsSerialNumberDuplicate(pItemData.SerialNumber)) { throw new Exception("Please try a different serial number."); }
 
             var returnedInventoryItem = FindInventoryItem(pItemData.InventoryItemId);
             var returnedLocation = FindLocation(pItemData.LocationId);
@@ -71,7 +83,6 @@ namespace BatmansInventory.API.Services
             pItemToCreate.SerialNumber = pItemData.SerialNumber;
             pItemToCreate.LocationId = pItemData.LocationId;
             pItemToCreate.Value = pItemData.Value;
-            //See why time is wrong
             pItemToCreate.Created = DateTime.Now;
             //Get UserId to auto CreatedBy
             pItemToCreate.CreatedBy = pItemData.CreatedBy;
@@ -86,14 +97,13 @@ namespace BatmansInventory.API.Services
 
         public PhysicalItem UpdatePhysicalItem(PhysicalItem pItemData)
         {
-            if (IsSerialNumberDuplicate(pItemData.SerialNumber)) { throw new Exception("Please try a different serial number."); }
             var returnedInventoryItem = FindInventoryItem(pItemData.InventoryItemId);
             var returnedLocation = FindLocation(pItemData.LocationId);
 
             var pItemToUpdate = GetById(pItemData.PhysicalItemId);
             pItemToUpdate.InventoryItemId = returnedInventoryItem.InventoryItemId;
             pItemToUpdate.Item = returnedInventoryItem;
-            //Need validation for SerialNumber
+            //Need to define what makes a serial number
             pItemToUpdate.SerialNumber = pItemData.SerialNumber;
             pItemToUpdate.LocationId = pItemData.LocationId;
             pItemToUpdate.Location = returnedLocation;

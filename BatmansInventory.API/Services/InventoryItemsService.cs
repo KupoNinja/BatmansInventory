@@ -71,6 +71,14 @@ namespace BatmansInventory.API.Services
         public InventoryItem UpdateInventoryItem(InventoryItem inventoryItem)
         {
             var inventoryItemToUpdate = GetById(inventoryItem.InventoryItemId);
+            //Test if SerialNumber matches, exists in DB, or completely different
+            if (inventoryItemToUpdate.PartNumber != inventoryItem.PartNumber)
+            {
+                if (IsPartNumberDuplicate(inventoryItem.PartNumber))
+                {
+                    throw new Exception("Please try a different part number.");
+                }
+            }
 
             inventoryItemToUpdate.PartName = inventoryItem.PartName;
             //How to handle if needing to change PartNumber?
@@ -94,6 +102,7 @@ namespace BatmansInventory.API.Services
             return isDeleted;
         }
 
+        // Test this validation
         private bool IsPartNumberDuplicate(string partNumber)
         {
             var isDuplicated = _iir.IsPartNumberDuplicate(partNumber);

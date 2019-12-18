@@ -94,7 +94,6 @@ namespace BatmansInventory.API.Services
             var returnedInventoryItem = FindInventoryItem(pItemData.InventoryItemId);
             var returnedLocation = FindLocation(pItemData.LocationId);
             
-
             //Set PhysicalItem DTO for Create
             var pItemToCreate = new PhysicalItem();
             pItemToCreate.InventoryItemId = pItemData.InventoryItemId;
@@ -115,10 +114,19 @@ namespace BatmansInventory.API.Services
 
         public PhysicalItem UpdatePhysicalItem(PhysicalItem pItemData)
         {
+            var pItemToUpdate = GetById(pItemData.PhysicalItemId);
+            //Test if SerialNumber matches, exists in DB, or completely different
+            if (pItemToUpdate.SerialNumber != pItemData.SerialNumber)
+            {
+                if (IsSerialNumberDuplicate(pItemData.SerialNumber))
+                {
+                    throw new Exception("Please try a different serial number.");
+                }
+            }
+
             var returnedInventoryItem = FindInventoryItem(pItemData.InventoryItemId);
             var returnedLocation = FindLocation(pItemData.LocationId);
 
-            var pItemToUpdate = GetById(pItemData.PhysicalItemId);
             pItemToUpdate.InventoryItemId = returnedInventoryItem.InventoryItemId;
             pItemToUpdate.InventoryItem = returnedInventoryItem;
             //Need to define what makes a serial number
@@ -143,6 +151,7 @@ namespace BatmansInventory.API.Services
             return isDeleted;
         }
 
+        //Test these validations
         private bool IsSerialNumberDuplicate(string serialNumber)
         {
             var isDuplicated = _pir.IsSerialNumberDuplicate(serialNumber);
@@ -150,7 +159,6 @@ namespace BatmansInventory.API.Services
             return isDuplicated;
         }
 
-        //Test these validations
         private InventoryItem FindInventoryItem(int inventoryItemId)
         {
             var inventoryItemToReturn = _iis.GetById(inventoryItemId);

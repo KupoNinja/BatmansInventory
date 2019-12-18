@@ -46,6 +46,19 @@ namespace DatingApp.API.Controllers
             }
         }
 
+        [HttpGet("[action]/{partNumber}")]
+        public ActionResult<InventoryItem> GetByPartNumber(string partNumber)
+        {
+            try
+            {
+                return Ok(_iis.GetByPartNumber(partNumber));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpPost]
         public ActionResult<InventoryItem> CreateInventoryItem([FromBody] InventoryItem inventoryItemData)
         {

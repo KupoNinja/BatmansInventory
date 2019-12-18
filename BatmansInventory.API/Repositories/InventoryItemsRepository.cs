@@ -25,7 +25,7 @@ namespace BatmansInventory.API.Services
 
         public InventoryItem GetById(int id)
         {
-            var inventoryItem = _db.InventoryItems.FirstOrDefault(i => i.InventoryItemId == id);
+            var inventoryItem = _db.InventoryItems.SingleOrDefault(i => i.InventoryItemId == id);
 
             return inventoryItem;
         }
@@ -39,7 +39,7 @@ namespace BatmansInventory.API.Services
 
         public InventoryItem GetByPartNumber(string partNumber)
         {
-            var inventoryItems = _db.InventoryItems.FirstOrDefault(i => i.PartNumber == partNumber);
+            var inventoryItems = _db.InventoryItems.SingleOrDefault(i => i.PartNumber == partNumber);
 
             return inventoryItems;
         }

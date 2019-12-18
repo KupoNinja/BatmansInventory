@@ -126,7 +126,7 @@ namespace BatmansInventory.API.Migrations
 
             modelBuilder.Entity("BatmansInventory.API.Models.PhysicalItem", b =>
                 {
-                    b.HasOne("BatmansInventory.API.Models.InventoryItem", "Item")
+                    b.HasOne("BatmansInventory.API.Models.InventoryItem", "InventoryItem")
                         .WithMany()
                         .HasForeignKey("InventoryItemId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -39,9 +39,9 @@ namespace BatmansInventory.API.Services
 
         public InventoryItem GetByPartNumber(string partNumber)
         {
-            var inventoryItems = _db.InventoryItems.SingleOrDefault(i => i.PartNumber == partNumber);
+            var inventoryItem = _db.InventoryItems.SingleOrDefault(i => i.PartNumber == partNumber);
 
-            return inventoryItems;
+            return inventoryItem;
         }
 
 

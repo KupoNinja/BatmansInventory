@@ -22,7 +22,7 @@ namespace BatmansInventory.Tests
         public InventoryItemsShould()
         {
             _fakeInventoryItemsList = new List<InventoryItem>();
-            //Fill in w / _mockRepo & sut
+            //Fill in w/ _mockRepo & sut
         }
 
         private void PopulateFakeInventoryItemsList()
@@ -231,20 +231,20 @@ namespace BatmansInventory.Tests
             Assert.Equal(fakeInventoryItemToRetrieve.InventoryItemId, fakeInventoryItemReturned.InventoryItemId);
         }
 
-        [Fact]
-        public void RetrieveInventoryItemByPartNumber()
-        {
-            //Arrange
-            var context = GetPopulatedInMemoryDbContext();
+        //[Fact]
+        //public void RetrieveInventoryItemByPartNumber()
+        //{
+        //    //Arrange
+        //    var context = GetPopulatedInMemoryDbContext();
 
-            InventoryItemsRepository sut = new InventoryItemsRepository(context);
+        //    InventoryItemsRepository sut = new InventoryItemsRepository(context);
 
-            //Act
-            var fakeInventoryItemToRetrieve = sut.GetByPartNumber("BTE-321");
+        //    //Act
+        //    var fakeInventoryItemToRetrieve = sut.GetByPartNumber("BTG-001");
 
-            //Assert
-            Assert.Equal("BTE-321", fakeInventoryItemToRetrieve.PartNumber);
-        }
+        //    //Assert
+        //    Assert.Equal("BTG-001", fakeInventoryItemToRetrieve.PartNumber);
+        //}
 
         [Fact]
         public void UpdateTheSelectedInventoryItem()
@@ -279,8 +279,7 @@ namespace BatmansInventory.Tests
             var fakeInventoryItemUnderSafetyStock2 = sut.GetById(4);
             var fakeInventoryItemNotUnderSafetyStock = sut.GetById(5);
 
-            //Assert
-            //Multiple asserts Ok?
+            //Assert            
             Assert.Contains(fakeInventoryItemUnderSafetyStock1, fakeListInventoryItemsUnderSafetyStock);
             Assert.Contains(fakeInventoryItemUnderSafetyStock2, fakeListInventoryItemsUnderSafetyStock);
             Assert.DoesNotContain(fakeInventoryItemNotUnderSafetyStock, fakeListInventoryItemsUnderSafetyStock);

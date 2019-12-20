@@ -8,6 +8,9 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
+// Refactor these tests. This was used to learn xUnit and attempt Moq
+// Can look for reference but most of these are brittle
+
 namespace BatmansInventory.Tests
 {
     public class InventoryItemsShould
